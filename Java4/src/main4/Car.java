@@ -49,7 +49,9 @@ public class Car {
 			this.distance += lastDistanceI;
 			this.fuel = 0;
 			System.out.println("これまでの走行距離" + this.distance + "km");
-			System.out.println("ガソリン消費量：" + this.fuel + "L");
+			System.out.println("現在の燃費：" + fuelConNow + "km/L");
+			System.out.println("ガソリン消費量：" + oilConI + "L");
+			System.out.println("ガソリン残量：" + this.fuel + "L");
 		}
 		this.fuelCon = this.fuelCon * (Math.pow(0.9,(this.distance/40))); //40km走るごとに燃費が0.9倍になっていく
 	}
