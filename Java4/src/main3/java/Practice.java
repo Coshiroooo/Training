@@ -1,3 +1,5 @@
+//Java道場2の再現
+
 package main3.java;
 import java.util.Scanner;
 
