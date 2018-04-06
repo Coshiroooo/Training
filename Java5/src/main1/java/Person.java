@@ -30,7 +30,7 @@ public class Person {
 	}
 	
 	public void buy(Vehicle vehicle) {
-		vehicle.setOwner(this);
+		vehicle.setOwner(this); //クラスを参照している　this = Person personのこと
 	}
 	
 	public String fullName() {
