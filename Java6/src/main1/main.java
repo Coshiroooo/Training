@@ -92,6 +92,8 @@ public class main {
 			list4.add(map5);
 			list4.add(map6);
 			
+			System.out.println(list4);
+			
 //			list4.forEach();
 		
 		
