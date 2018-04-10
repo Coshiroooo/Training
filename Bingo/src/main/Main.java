@@ -8,48 +8,52 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		System.out.println("        〜BINGO GAME〜");
+		Bingo bingo = new Bingo(squareLength); //Bingoクラスをインスタンス化
 		
+		System.out.println("        〜BINGO GAME〜");
+		System.out.println();
+		
+		System.out.println("　　あなたのビンゴカードはこれです！");
 		makeBingo();
+		
+		System.out.println();
+		System.out.println("     抽選番号は " + bingo.comeNumber() + " です！！");
 		
 	}
 	
-	public static void makeBingo() {
+	public static void makeBingo() { //Bingoのマス目を作る
 		
-		List<List<Integer>> matrixList = new ArrayList<List<Integer>>(); //マス目List
-		List<Integer> sideList = new ArrayList<Integer>(); //マス目の横列のList
-		List<List<Integer>> verticalList = new ArrayList<List<Integer>>();
+		List<Integer> bingoCardList = new ArrayList<Integer>(); //マス目に入る数字のList
 		Random random = new Random();
 		
 		String numberBox = "  ";
 		
-//		for(int j = 0; j < squareLength; j++) { //Listに1~100の数字をランダムに入れていく
-//			
-//			for(int i = 0; i < squareLength; i++) {
-//				int randomNumber = random.nextInt(100) + 1;
-//				sideList.add(randomNumber); 
-//			}
-//			matrixList.add(sideList);
-//		}
-		for(int i = 0; i < squareLength; i++) {
-			for(int j = 0; j < squareLength; j++) {
-				int randomNumber = random.nextInt(100) + 1;
-				matrixList.get(i).set(j,randomNumber);
-			}
-			matrixList.set(i, matrixList.get(i));
+		for(int i =1; i < 101; i++){ //1~100の数字を格納し、shuffleでランダムに並び替えて順番に取り出させる
+			bingoCardList.add(i);
 		}
+		Collections.shuffle(bingoCardList);
 		
-		System.out.println(matrixList.get(0).get(0));
+//		for(int i = squareLength; i < 101; i++) { //マス目にいれない数字を取り除く
+//			bingoCardList.remove(i);
+//		}
 		
 		for(int l = 0; l < squareLength; l++) { //マス目を作る
 			for(int i = 0; i < squareLength; i++) {
 				System.out.print("______");
 			}
 			System.out.println();
-			for(int j = 0; j < squareLength; j++) {
-				System.out.print("|  ");
-				System.out.print(matrixList.get(l).get(j));
-				System.out.print(" ");
+			for(int j = 1; j < squareLength + 1; j++) {
+				if(9 < bingoCardList.get((j + squareLength*l) - 1)  && bingoCardList.get((j + squareLength*l) - 1) < 100) {
+					System.out.print("|  ");
+					System.out.print(bingoCardList.get((j + squareLength*l) - 1)); //1列埋めたら改行して数字を埋めていく
+					System.out.print(" ");
+				}else if(bingoCardList.get((j + squareLength*l) - 1) < 10) {
+					System.out.print("|  " + 0); //マス目がずれないように、1桁の数字を2桁にする
+					System.out.print(bingoCardList.get((j + squareLength*l) - 1)); //1列埋めたら改行して数字を埋めていく
+					System.out.print(" ");
+				}else if(bingoCardList.get((j + squareLength*l) - 1) == 100){ //100の時は空白を一つ使う
+					System.out.print("| " + 100 + " ");
+				}
 			}
 			System.out.print("|");
 			System.out.println();
