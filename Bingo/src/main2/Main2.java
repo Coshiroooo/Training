@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Main2 {
 	
-	static int squareLength = 5;
+	static int squareLength = 10;
 	static List<Integer> bingoCardList = new ArrayList<Integer>();
 	static List<List<Integer>> matrixList = new ArrayList<List<Integer>>();
 	static List<Integer> winningNumbers = new ArrayList<Integer>();
@@ -115,19 +115,26 @@ public class Main2 {
 		return matrixList;
 	}
 	
-	public static boolean bingoJudge() {
+	public static boolean bingoJudge() { //ビンゴを判定する機能
 		Boolean isBingoJudge = false;
 		
 		for(int i = 0; i < squareLength; i++) {
 			List<Integer> exactListVer = new ArrayList<Integer>();
 			List<Integer> exactListSide = new ArrayList<Integer>();
+			List<Integer> exactListSlant1 = new ArrayList<Integer>();
+			List<Integer> exactListSlant2 = new ArrayList<Integer>();
 			
 			for(int j = 0; j < squareLength; j++) {
 				exactListVer.add(matrixList.get(j).get(i));
 				exactListSide.add(matrixList.get(i).get(j));
+				exactListSlant1.add(matrixList.get(j).get(j));
+				exactListSlant2.add(matrixList.get(j).get(squareLength - (j+1)));
+				
 			}
 			int countVer = 0;
 			int countSide = 0;
+			int countSlant1 = 0;
+			int countSlant2 = 0;
 			for(int c : currentWinningNumbers) {
 				if(exactListVer.contains(c)) {
 					countVer++;
@@ -135,8 +142,14 @@ public class Main2 {
 				if(exactListSide.contains(c)) {
 					countSide++;
 				}
+				if(exactListSlant1.contains(c)) {
+					countSlant1++;
+				}
+				if(exactListSlant2.contains(c)) {
+					countSlant2++;
+				}
 			}	
-			if(countVer == 5 || countSide == 5) {
+			if(countVer == squareLength || countSide == squareLength || countSlant1 == squareLength || countSlant2 == squareLength) {
 				isBingoJudge = true;
 				break;
 			}else {
