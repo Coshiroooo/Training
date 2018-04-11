@@ -11,6 +11,7 @@ public class Bingo {
 	private int winningNumbersIndex = 0;
 	private boolean isBingoJudgeVer;
 	private boolean isBingoJudgeSide;
+	private boolean isBingoJudgeSlant;
 	
 	Bingo(){ //コンストラクタ
 		
@@ -178,6 +179,37 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 		this.isBingoJudgeSide = isBingoJudegeSide;
 	}
 	
+	public void bingoJudgeSlant() {
+		
+		Boolean isBingoJudgeSlant = false;
+		
+		if(
+			(
+			this.currentWinningNumbers.contains(bingoCardList.get(0*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(1*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(2*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(3*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(4*(squareLength + 1)))
+			)
+			
+			||
+			
+			(
+			this.currentWinningNumbers.contains(bingoCardList.get(1*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(2*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(3*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(4*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(5*(squareLength -1)))
+			)
+			) {
+			isBingoJudgeSlant = true;
+		}else {
+			isBingoJudgeSlant = false;
+		}
+		
+		this.isBingoJudgeSlant = isBingoJudgeSlant;
+	}
+	
 	public int getSquareLength() {
 		return this.squareLength;
 	}
@@ -188,6 +220,10 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 	
 	public boolean getIsBingoJudgeSide() {
 		return this.isBingoJudgeSide;
+	}
+	
+	public boolean getIsBingoJudgeSlant() {
+		return this.isBingoJudgeSlant;
 	}
 	
 }

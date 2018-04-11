@@ -34,7 +34,8 @@ public class Main {
 			bingo.fixBingo();
 			bingo.bingoJudgeVer(); //ビンゴがあるかどうかチェックする //trueでbreak;し、処理を抜け、ゲーム終了にする
 			bingo.bingoJudgeSide();
-			if(bingo.getIsBingoJudgeVer() || bingo.getIsBingoJudgeSide()) {
+			bingo.bingoJudgeSlant();
+			if(bingo.getIsBingoJudgeVer() || bingo.getIsBingoJudgeSide() || bingo.getIsBingoJudgeSlant()) {
 				break;
 			}else{
 				System.out.println(bingo.getIsBingoJudgeVer());
