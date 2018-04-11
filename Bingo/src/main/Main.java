@@ -37,8 +37,6 @@ public class Main {
 			bingo.bingoJudgeSlant();
 			if(bingo.getIsBingoJudgeVer() || bingo.getIsBingoJudgeSide() || bingo.getIsBingoJudgeSlant()) {
 				break;
-			}else{
-				System.out.println(bingo.getIsBingoJudgeVer());
 			}
 		}
 		System.out.println();
