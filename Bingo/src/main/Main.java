@@ -32,7 +32,16 @@ public class Main {
 			System.out.println();
 			
 			bingo.fixBingo();
+			bingo.bingoJudgeVer(); //ビンゴがあるかどうかチェックする //trueでbreak;し、処理を抜け、ゲーム終了にする
+			bingo.bingoJudgeSide();
+			if(bingo.getIsBingoJudgeVer() || bingo.getIsBingoJudgeSide()) {
+				break;
+			}else{
+				System.out.println(bingo.getIsBingoJudgeVer());
+			}
 		}
+		System.out.println();
+		System.out.println("        ビンゴ！！！");
 		
 		
 	}
