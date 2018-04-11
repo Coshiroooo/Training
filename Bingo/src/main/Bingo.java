@@ -9,6 +9,8 @@ public class Bingo {
 	private List<Integer> currentWinningNumbers = new ArrayList<Integer>(); //現在出ている当選番号のリスト
 	private List<Integer> bingoCardList = new ArrayList<Integer>(); //ビンゴカードに書かれている番号
 	private int winningNumbersIndex = 0;
+	private boolean isBingoJudgeVer;
+	private boolean isBingoJudgeSide;
 	
 	Bingo(){ //コンストラクタ
 		
@@ -78,9 +80,7 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 	}
 
 	public void fixBingo() { //********************空白があるビンゴカードを作るメソッド
-		
-//		List<Integer> currentWinningNumbers = new ArrayList<Integer>();
-		
+				
 		int winningNumber = 0;
 		
 		for(int l = 0; l < squareLength; l++) { //マス目を作る
@@ -93,7 +93,7 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 				int numberBox = bingoCardList.get((j + squareLength*l) - 1);
 		
 				if(numberBox == winningNumbers.get(winningNumbersIndex)) { //当選番号と合致していたら空白を返す
-					System.out.print("|     ");
+					System.out.print("|     "); //空白
 					winningNumber = numberBox;
 				}else {
 					
@@ -133,8 +133,61 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 		winningNumbersIndex++;
 	}
 	
+	public void bingoJudgeVer() { //ビンゴ縦判定
+		
+		Boolean isBingoJudgeVer = false;
+		
+		for(int i = 0; i < this.squareLength; i++) {
+			if(
+					this.currentWinningNumbers.contains(bingoCardList.get(0*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(1*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(2*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(3*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(4*squareLength + i))
+					){
+				isBingoJudgeVer = true;
+				break;
+			}else{
+				isBingoJudgeVer = false;
+			}		
+		}
+		
+		this.isBingoJudgeVer = isBingoJudgeVer;
+		
+	}
+	
+	public void bingoJudgeSide() { //ビンゴ横判定
+		
+		Boolean isBingoJudegeSide = false;
+		
+		for(int i = 0; i < this.squareLength; i++) {
+			if(
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 1)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 2)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 3)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 4))
+				) {
+				isBingoJudegeSide = true;
+				break;
+			}else {
+				isBingoJudegeSide = false;
+			}
+		}
+		
+		this.isBingoJudgeSide = isBingoJudegeSide;
+	}
+	
 	public int getSquareLength() {
 		return this.squareLength;
+	}
+	
+	public boolean getIsBingoJudgeVer() {
+		return this.isBingoJudgeVer;
+	}
+	
+	public boolean getIsBingoJudgeSide() {
+		return this.isBingoJudgeSide;
 	}
 	
 }
