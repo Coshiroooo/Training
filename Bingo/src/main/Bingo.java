@@ -15,22 +15,14 @@ public class Bingo {
 	
 	Bingo(){ //コンストラクタ
 		
-		List<Integer> winningNumbers = new ArrayList<Integer>();
-		
 		for(int i = 1; i < 101; i++){
-			winningNumbers.add(i);
+			this.winningNumbers.add(i);
 		}
-		Collections.shuffle(winningNumbers);
-		this.winningNumbers = winningNumbers;
-	}
-	
-	public void arrangeNumber(List<Integer> bingoCardNumbers,int numberBox) {
-		
+		Collections.shuffle(this.winningNumbers);
 	}
 	
 	public int comeNumber() { //**************************当選番号を返すメソッド
 		return this.winningNumbers.get(winningNumbersIndex);
-//		winningNumbers.remove(0);
 	}
 	
 public void makeBingo() { //*******************************Bingoのマス目を作る
@@ -43,11 +35,6 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 		}
 		Collections.shuffle(bingoCardList);
 		this.bingoCardList = bingoCardList;
-		
-//		for(int i = squareLength; i < 101; i++) { //マス目にいれない数字を取り除く
-//			bingoCardList.remove(i);
-//			bingoCardList = bingoCardList;
-//		}
 		
 		for(int l = 0; l < squareLength; l++) { //マス目を作る
 			for(int i = 0; i < squareLength; i++) {
@@ -137,6 +124,11 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 	public void bingoJudgeVer() { //ビンゴ縦判定
 		
 		Boolean isBingoJudgeVer = false;
+		Map<String,Integer> mapVer = new HashMap<String,Integer>();
+		
+		for(int i = 0; i < squareLength; i++) {
+			mapVer.put(1 + "列目", bingoCardList.get(i*squareLength));
+		}
 		
 		for(int i = 0; i < this.squareLength; i++) {
 			if(
