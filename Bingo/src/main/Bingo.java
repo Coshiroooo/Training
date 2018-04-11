@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Bingo {
 
-	private int squareLength = 5;
+	private int squareLength = 10; //++++++++++10×10変更
 	private List<Integer> winningNumbers = new ArrayList<Integer>(); //当選番号のList
 	private List<Integer> currentWinningNumbers = new ArrayList<Integer>(); //現在出ている当選番号のリスト
 	private List<Integer> bingoCardList = new ArrayList<Integer>(); //ビンゴカードに書かれている番号
@@ -144,7 +144,12 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 					this.currentWinningNumbers.contains(bingoCardList.get(1*squareLength + i)) &&
 					this.currentWinningNumbers.contains(bingoCardList.get(2*squareLength + i)) &&
 					this.currentWinningNumbers.contains(bingoCardList.get(3*squareLength + i)) &&
-					this.currentWinningNumbers.contains(bingoCardList.get(4*squareLength + i))
+					this.currentWinningNumbers.contains(bingoCardList.get(4*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(5*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(6*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(7*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(8*squareLength + i)) &&
+					this.currentWinningNumbers.contains(bingoCardList.get(9*squareLength + i))
 					){
 				isBingoJudgeVer = true;
 				break;
@@ -167,7 +172,12 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 1)) &&
 				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 2)) &&
 				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 3)) &&
-				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 4))
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 4)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 5)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 6)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 7)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 8)) &&
+				this.currentWinningNumbers.contains(bingoCardList.get(squareLength*i + 9))
 				) {
 				isBingoJudegeSide = true;
 				break;
@@ -189,7 +199,12 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 			this.currentWinningNumbers.contains(bingoCardList.get(1*(squareLength + 1))) &&
 			this.currentWinningNumbers.contains(bingoCardList.get(2*(squareLength + 1))) &&
 			this.currentWinningNumbers.contains(bingoCardList.get(3*(squareLength + 1))) &&
-			this.currentWinningNumbers.contains(bingoCardList.get(4*(squareLength + 1)))
+			this.currentWinningNumbers.contains(bingoCardList.get(4*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(5*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(6*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(7*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(8*(squareLength + 1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(9*(squareLength + 1)))
 			)
 			
 			||
@@ -199,7 +214,12 @@ public void makeBingo() { //*******************************Bingoのマス目を�
 			this.currentWinningNumbers.contains(bingoCardList.get(2*(squareLength -1))) &&
 			this.currentWinningNumbers.contains(bingoCardList.get(3*(squareLength -1))) &&
 			this.currentWinningNumbers.contains(bingoCardList.get(4*(squareLength -1))) &&
-			this.currentWinningNumbers.contains(bingoCardList.get(5*(squareLength -1)))
+			this.currentWinningNumbers.contains(bingoCardList.get(5*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(6*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(7*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(8*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(9*(squareLength -1))) &&
+			this.currentWinningNumbers.contains(bingoCardList.get(10*(squareLength -1)))
 			)
 			) {
 			isBingoJudgeSlant = true;
