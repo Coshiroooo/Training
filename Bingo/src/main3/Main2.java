@@ -30,28 +30,22 @@ public class Main2 {
 	public static void main(String[] args)throws IOException{
 		
 		Main2 main = new Main2();
-		
-		System.out.println();
-		System.out.println("【BINGO GAME】");
-		System.out.println();
-		System.out.println("あなたのカードです");
+
+		System.out.println("\r\n" + "【BINGO GAME】");
+		System.out.println("\r\n" + "あなたのカードです");
 		
 		makeBingo();
 		
 		for(int i = 0; i < bingoCardList.size(); i++) {
-			System.out.println("　　　　  ↓抽選する↓");
+			System.out.println("↓抽選する↓");
 			enter();
-			System.out.println();
-			System.out.println("         " + (i + 1) +"回目の抽選" );
-			System.out.println();
+			System.out.println("\r\n" + (i + 1) +"回目の抽選" + "\r\n" );
 			System.out.println("当選番号は" + winningNumbers.get(winningNumbersIndex) + "です！");
 			makeBingo();
-			System.out.println();
 			
 			if(bingoJudge()) {break;}
 		}
-		System.out.println();
-		System.out.println("        ビンゴ！！！");
+		System.out.println("\r\n" + "ビンゴ！！！");
 	}
 	
 	public static void makeBingo() { //ビンゴを作る
@@ -72,24 +66,16 @@ public class Main2 {
 					if(currentWinningNumbers.contains(numberBox)) {
 						System.out.print("|     ");
 					}else {
-						int numberLength = String.valueOf(numberBox).length(); //桁数計算
-						switch(numberLength) {
-							case 1: System.out.print("|  " + 0 + numberBox + " ");break;
-							case 2: System.out.print("|  " + numberBox + " ");break;
-							case 3: System.out.print("| " + numberBox + " ");break;
-						}
+						System.out.printf("| %3d ",numberBox);
 					}
 				}
 			}
-			System.out.print("|");
-			System.out.println();
+			System.out.print("|" + "\r\n");
 		}
 
 		for(int i : squareLengthList) {System.out.print("______");}
-		System.out.println();
-		System.out.println();
 		String judge = (winningNumbers.get(winningNumbersIndex) == -1) ? "" : (winningNumber == winningNumbers.get(winningNumbersIndex)) ? "当たり！" : "残念！";
-		System.out.println(judge);
+		System.out.println("\r\n" + "\r\n" + judge + "\r\n");
 		currentWinningNumbers.add(winningNumbers.get(winningNumbersIndex));
 		winningNumbersIndex++;
 	}
@@ -107,8 +93,8 @@ public class Main2 {
 		for(int i : squareLengthList) {
 			List<Integer> exactListVer = new ArrayList<Integer>(); //縦
 			List<Integer> exactListSide = new ArrayList<Integer>(); //横
-			List<Integer> exactListSlant1 = new ArrayList<Integer>(); 
-			List<Integer> exactListSlant2 = new ArrayList<Integer>();
+			List<Integer> exactListSlant1 = new ArrayList<Integer>(); //斜め1
+			List<Integer> exactListSlant2 = new ArrayList<Integer>(); //斜め2
 			
 			for(int j : squareLengthList) {
 				exactListVer.add(matrixList.get(j).get(i));
