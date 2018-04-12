@@ -1,4 +1,4 @@
-package main2;
+package main3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,11 +12,11 @@ public class Main2 {
 	static List<List<Integer>> matrixList = new ArrayList<List<Integer>>();
 	static List<Integer> winningNumbers = new ArrayList<Integer>();
 	static List<Integer> currentWinningNumbers = new ArrayList<Integer>();
- 	static List<Integer> squareList = new ArrayList<Integer>();
- 	static List<Integer> squareSideList = new ArrayList<Integer>();
+ 	static List<Integer> squareLengthList = new ArrayList<Integer>();
 	static int winningNumbersIndex = 0;
 	
 	Main2(){
+		for(int i = 0; i < squareLength; i++) {squareLengthList.add(i);}
 		for(int i = 1; i < 101; i++) {
 			winningNumbers.add(i);
 			bingoCardList.add(i);
@@ -25,7 +25,6 @@ public class Main2 {
 		Collections.shuffle(bingoCardList);
 		winningNumbers.add(0,-1); //先頭に0を挿入。初回の繰り返し時に当選処理が起きないようにするため
 		matrixList = makeNumberList();
-		
 	}
 	
 	public static void main(String[] args)throws IOException{
@@ -39,7 +38,7 @@ public class Main2 {
 		
 		makeBingo();
 		
-		for(int i = 0; i < 100; i++) {
+		for(int i = 0; i < bingoCardList.size(); i++) {
 			System.out.println("　　　　  ↓抽選する↓");
 			enter();
 			System.out.println();
@@ -59,14 +58,12 @@ public class Main2 {
 		
 		int winningNumber = 0;
 		
-		for(int l = 0; l < squareLength; l++) { //マス目を作る
-			for(int i = 0; i < squareLength; i++) {
-				System.out.print("______");
-			}
+		for(int l : squareLengthList) { //マス目を作る
+			for(int i : squareLengthList) {System.out.print("______");}
 			System.out.println();
-			for(int j = 1; j < squareLength + 1; j++) {
+			for(int j : squareLengthList) {
 		
-				int numberBox = matrixList.get(l).get(j-1);
+				int numberBox = matrixList.get(l).get(j);
 				
 				if(numberBox == winningNumbers.get(winningNumbersIndex)) {
 					System.out.print("|     ");
@@ -75,12 +72,11 @@ public class Main2 {
 					if(currentWinningNumbers.contains(numberBox)) {
 						System.out.print("|     ");
 					}else {
-						if(9 < numberBox  && numberBox < 100) {
-							System.out.print("|  " + numberBox + " ");
-						}else if(numberBox < 10) {
-							System.out.print("|  " + 0 + numberBox + " "); //マス目がずれないように、1桁の数字を2桁にする
-						}else if(numberBox == 100){ //100の時は空白を一つ使う
-							System.out.print("| " + 100 + " ");
+						int numberLength = String.valueOf(numberBox).length(); //桁数計算
+						switch(numberLength) {
+							case 1: System.out.print("|  " + 0 + numberBox + " ");break;
+							case 2: System.out.print("|  " + numberBox + " ");break;
+							case 3: System.out.print("| " + numberBox + " ");break;
 						}
 					}
 				}
@@ -88,9 +84,8 @@ public class Main2 {
 			System.out.print("|");
 			System.out.println();
 		}
-		for(int i = 0; i < squareLength; i++) {
-			System.out.print("______");
-		}
+
+		for(int i : squareLengthList) {System.out.print("______");}
 		System.out.println();
 		System.out.println();
 		String judge = (winningNumbers.get(winningNumbersIndex) == -1) ? "" : (winningNumber == winningNumbers.get(winningNumbersIndex)) ? "当たり！" : "残念！";
@@ -100,7 +95,7 @@ public class Main2 {
 	}
 	
 	public static List<List<Integer>> makeNumberList(){ //bingoCardListをsquareLength行分に分けたリストを作り、二次元リストに追加
-		for(int i = 0; i < squareLength; i++) {
+		for(int i : squareLengthList) {
 		matrixList.add(new ArrayList<Integer>(bingoCardList.subList(i*squareLength, (i + 1)*squareLength)));
 		}
 		return matrixList;
@@ -109,13 +104,13 @@ public class Main2 {
 	public static boolean bingoJudge() { //ビンゴを判定する機能
 		Boolean isBingoJudge = false;
 		
-		for(int i = 0; i < squareLength; i++) {
-			List<Integer> exactListVer = new ArrayList<Integer>();
-			List<Integer> exactListSide = new ArrayList<Integer>();
-			List<Integer> exactListSlant1 = new ArrayList<Integer>();
+		for(int i : squareLengthList) {
+			List<Integer> exactListVer = new ArrayList<Integer>(); //縦
+			List<Integer> exactListSide = new ArrayList<Integer>(); //横
+			List<Integer> exactListSlant1 = new ArrayList<Integer>(); 
 			List<Integer> exactListSlant2 = new ArrayList<Integer>();
 			
-			for(int j = 0; j < squareLength; j++) {
+			for(int j : squareLengthList) {
 				exactListVer.add(matrixList.get(j).get(i));
 				exactListSide.add(matrixList.get(i).get(j));
 				exactListSlant1.add(matrixList.get(j).get(j));
