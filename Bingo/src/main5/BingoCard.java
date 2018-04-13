@@ -3,7 +3,6 @@ package main5;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.*;
 
 public class BingoCard {
 	
@@ -205,10 +204,6 @@ public class BingoCard {
 	}
 	
 	//ゲッター//
-	
-	public int getCardWidth() {
-		return cardWidth;
-	}
 	
 	public List<Integer> getBingoNumbers(){
 		return bingoNumbers;
