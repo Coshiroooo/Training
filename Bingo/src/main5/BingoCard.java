@@ -3,6 +3,7 @@ package main5;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class BingoCard {
 	
@@ -12,9 +13,19 @@ public class BingoCard {
 	
 	private List<Integer> bingoNumbers = new ArrayList<Integer>(); // カードに配置されうる数字の候補List
 	private List<List<Integer>> bingoCardNumbers = new ArrayList<List<Integer>>(); // カードに配置する数字のList
-	private List<Integer> currentWinningNumbers = new ArrayList<Integer>(); // 既出の抽選番号のList
 	
-	BingoCard(int cardWidth){
+	BingoCard(){
+		selectWidth();
+	}
+	
+	public void selectWidth() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("ビンゴのマス目の幅を入力してください：");
+		int cardWidth = scanner.nextInt();
+		if(cardWidth > 30) {
+			System.out.println("30以下の数字を入力してください");
+			selectWidth();
+		}
 		this.cardWidth = cardWidth;
 	}
 	
@@ -37,10 +48,10 @@ public class BingoCard {
 	
 	public void pickWinningNumber() { //lotteryからランダムに数字を出し、既出もしくは範囲外ならもう一度引く
 		int winningNumber = lottery.pickNumber();
-		if(currentWinningNumbers.contains(winningNumber) || !(bingoNumbers.contains(winningNumber))) {
+		if(lottery.getCurrentWinningNumbers().contains(winningNumber) || !(bingoNumbers.contains(winningNumber))) {
 			pickWinningNumber();
 		}else {
-			currentWinningNumbers.add(winningNumber);
+			lottery.getCurrentWinningNumbers().add(winningNumber);
 		}
 	}
 	
@@ -51,7 +62,7 @@ public class BingoCard {
 		System.out.println();
 		System.out.println((i + 1) + "回目の抽選");
 		System.out.println();
-		System.out.println("当選番号は" + currentWinningNumbers.get(i) + "です！");
+		System.out.println("当選番号は" + lottery.getCurrentWinningNumbers().get(i) + "です！");
 
 		int winningNumber = 0;
 
@@ -61,11 +72,11 @@ public class BingoCard {
 			}
 			System.out.println();
 			for (int bcNumber : bcNumbers) { // 取り出したリストを1つずつ処理して繰り返し
-				if (bcNumber == currentWinningNumbers.get(i)) {
+				if (bcNumber == lottery.getCurrentWinningNumbers().get(i)) {
 					System.out.print("|     ");
 					winningNumber = bcNumber;
 				} else {
-					if (currentWinningNumbers.contains(bcNumber)) {
+					if (lottery.getCurrentWinningNumbers().contains(bcNumber)) {
 						System.out.print("|     ");
 					} else {
 						System.out.printf("| %3d ", bcNumber);
@@ -81,12 +92,15 @@ public class BingoCard {
 		}
 		System.out.println();
 		System.out.println();
-		String judge = (winningNumber == currentWinningNumbers.get(i)) ? "当たり！" : "残念！";
+		String judge = (winningNumber == lottery.getCurrentWinningNumbers().get(i)) ? "当たり！" : "残念！";
 		System.out.println(judge);
 		System.out.println();
 	}
 	
 	public void makeBingo() { // +++++初期ビンゴを作る+++++
+		System.out.println();
+		System.out.println("あなたのカードです");
+		
 		for (List<Integer> bcNumbers : bingoCardNumbers) {
 			for (List<Integer> loop : bingoCardNumbers) {
 				System.out.print("______");
@@ -117,7 +131,7 @@ public class BingoCard {
 			for (List<Integer> bcNumbers2 : bingoCardNumbers) {
 				exactListVer.add(bcNumbers2.get(bingoCardNumbers.indexOf(bcNumbers))); // bingoCardNumbers.get(ループ変数).get(定数)と同じ 縦列を表す
 			}
-			for (int c : currentWinningNumbers) {
+			for (int c : lottery.getCurrentWinningNumbers()) {
 				if (exactListVer.contains(c)) {
 					countVer++;
 				}
@@ -138,7 +152,7 @@ public class BingoCard {
 			List<Integer> exactListSide = new ArrayList<Integer>();
 			int countSide = 0;
 			exactListSide = bcNumbers; // 横1列分のListを作る
-			for (int c : currentWinningNumbers) { // 参照した列の中の数字が既出の当選番号に含まれている分だけカウントされる
+			for (int c : lottery.getCurrentWinningNumbers()) { // 参照した列の中の数字が既出の当選番号に含まれている分だけカウントされる
 				if (exactListSide.contains(c)) {
 					countSide++;
 				}
@@ -161,7 +175,7 @@ public class BingoCard {
 		for (List<Integer> bcNumbers : bingoCardNumbers) {
 				exactListSlant1.add(bcNumbers.get(bingoCardNumbers.indexOf(bcNumbers)));
 		}
-		for (int c : currentWinningNumbers) {
+		for (int c : lottery.getCurrentWinningNumbers()) {
 			if (exactListSlant1.contains(c)) {
 				countSlant1++;
 			}
@@ -182,7 +196,7 @@ public class BingoCard {
 		for (List<Integer> bcNumbers : bingoCardNumbers) {
 			exactListSlant2.add(bcNumbers.get(cardWidth - (bingoCardNumbers.indexOf(bcNumbers) + 1)));
 		}
-		for (int c : currentWinningNumbers) {
+		for (int c : lottery.getCurrentWinningNumbers()) {
 			if (exactListSlant2.contains(c)) {
 				countSlant2++;
 			}
@@ -193,13 +207,8 @@ public class BingoCard {
 		return isBingoJudge;
 	}
 	
-	public boolean isBingoJudgeSlant() { //斜め判定をまとめた
-		Boolean isBingoJudge = (isBingoJudgeSlant1() || isBingoJudgeSlant2()) ? true : false;
-		return isBingoJudge;
-	}
-	
 	public boolean isBingoJudge() { //全部の判定をまとめた
-		Boolean isBingoJudge = (isBingoJudgeVertical() || isBingoJudgeSide() || isBingoJudgeSlant()) ? true : false;
+		Boolean isBingoJudge = (isBingoJudgeVertical() || isBingoJudgeSide() || isBingoJudgeSlant1() || isBingoJudgeSlant2()) ? true : false;
 		return isBingoJudge;
 	}
 	

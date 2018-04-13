@@ -3,19 +3,21 @@ package main5;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.*;
 
 public class Main5 {
+	
+	static Scanner scanner = new Scanner(System.in);
+	static int cardWidth;
 
 	public static void main(String[] args) throws IOException {
-		
-		BingoCard bingoCard = new BingoCard(12);
-		
-		bingoCard.makeBingoCardNumbers();
 
 		System.out.println();
 		System.out.println("【BINGO GAME】");
-		System.out.println();
-		System.out.println("あなたのカードです");
+		
+		BingoCard bingoCard = new BingoCard();
+		
+		bingoCard.makeBingoCardNumbers();
 
 		bingoCard.makeBingo();
 
