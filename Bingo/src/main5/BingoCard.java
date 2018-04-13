@@ -43,19 +43,19 @@ public class BingoCard {
 			}
 			System.out.println();
 			for (int bcNumber : bcNumbers) { // 取り出したリストを1つずつ処理して繰り返し
-				int numberBox = bcNumber;
-				if (numberBox == winningNumbers.get(i)) {
+				if (bcNumber == winningNumbers.get(i)) {
 					System.out.print("|     ");
-					winningNumber = numberBox;
+					winningNumber = bcNumber;
 				} else {
-					if (currentWinningNumbers.contains(numberBox)) {
+					if (currentWinningNumbers.contains(bcNumber)) {
 						System.out.print("|     ");
 					} else {
-						System.out.printf("| %3d ", numberBox);
+						System.out.printf("| %3d ", bcNumber);
 					}
 				}
 			}
-			System.out.print("|" + "\r\n");
+			System.out.print("|");
+			System.out.println();
 		}
 
 		for (List<Integer> loop : bingoCardNumbers) {
@@ -76,10 +76,10 @@ public class BingoCard {
 			}
 			System.out.println();
 			for (int bcNumber : bcNumbers) { // 取り出したリストを1つずつ処理して繰り返し
-				int numberBox = bcNumber;
-				System.out.printf("| %3d ", numberBox);
+				System.out.printf("| %3d ", bcNumber);
 			}
-			System.out.print("|" + "\r\n");
+			System.out.print("|");
+			System.out.println();
 		}
 
 		for (List<Integer> loop : bingoCardNumbers) {
