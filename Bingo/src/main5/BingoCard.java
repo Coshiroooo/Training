@@ -3,8 +3,11 @@ package main5;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.*;
 
 public class BingoCard {
+	
+	private Lottery lottery = new Lottery();
 	
 	private int cardWidth; //カードの幅
 	
@@ -22,7 +25,7 @@ public class BingoCard {
 				bingoNumbers.add(i);
 			}
 		} else { // 11マス以上は、マス数と同じ数だけの数字が入る
-			for (int i = 1; i < cardWidth * cardWidth + 1; i++) {
+			for (int i = 1; i <= cardWidth * cardWidth; i++) {
 				bingoNumbers.add(i);
 			}
 		}
@@ -33,7 +36,23 @@ public class BingoCard {
 		}
 	}
 	
-	public void updateBingo(int i,List<Integer> winningNumbers) { // +++++抽選状況に合わせたビンゴを作る+++++
+	public void pickWinningNumber() { //lotteryからランダムに数字を出し、既出もしくは範囲外ならもう一度引く
+		int winningNumber = lottery.pickNumber();
+		if(currentWinningNumbers.contains(winningNumber) || !(bingoNumbers.contains(winningNumber))) {
+			pickWinningNumber();
+		}else {
+			currentWinningNumbers.add(winningNumber);
+		}
+	}
+	
+	public void updateBingo(int i) { // +++++抽選状況に合わせたビンゴを作る+++++
+		
+		pickWinningNumber();
+		
+		System.out.println();
+		System.out.println((i + 1) + "回目の抽選");
+		System.out.println();
+		System.out.println("当選番号は" + currentWinningNumbers.get(i) + "です！");
 
 		int winningNumber = 0;
 
@@ -43,7 +62,7 @@ public class BingoCard {
 			}
 			System.out.println();
 			for (int bcNumber : bcNumbers) { // 取り出したリストを1つずつ処理して繰り返し
-				if (bcNumber == winningNumbers.get(i)) {
+				if (bcNumber == currentWinningNumbers.get(i)) {
 					System.out.print("|     ");
 					winningNumber = bcNumber;
 				} else {
@@ -63,10 +82,9 @@ public class BingoCard {
 		}
 		System.out.println();
 		System.out.println();
-		String judge = (winningNumber == winningNumbers.get(i)) ? "当たり！" : "残念！";
+		String judge = (winningNumber == currentWinningNumbers.get(i)) ? "当たり！" : "残念！";
 		System.out.println(judge);
 		System.out.println();
-		currentWinningNumbers.add(winningNumbers.get(i));
 	}
 	
 	public void makeBingo() { // +++++初期ビンゴを作る+++++
@@ -178,6 +196,11 @@ public class BingoCard {
 	
 	public boolean isBingoJudgeSlant() { //斜め判定をまとめた
 		Boolean isBingoJudge = (isBingoJudgeSlant1() || isBingoJudgeSlant2()) ? true : false;
+		return isBingoJudge;
+	}
+	
+	public boolean isBingoJudge() { //全部の判定をまとめた
+		Boolean isBingoJudge = (isBingoJudgeVertical() || isBingoJudgeSide() || isBingoJudgeSlant()) ? true : false;
 		return isBingoJudge;
 	}
 	

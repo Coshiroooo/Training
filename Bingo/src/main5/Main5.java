@@ -11,11 +11,9 @@ public class Main5 {
 
 	public static void main(String[] args) throws IOException {
 		
-		BingoCard bingoCard = new BingoCard(5);
-		Lottery lottery = new Lottery(bingoCard);
+		BingoCard bingoCard = new BingoCard(12);
 		
 		bingoCard.makeBingoCardNumbers();
-		lottery.makeWinningNumbers(bingoCard);
 
 		System.out.println();
 		System.out.println("【BINGO GAME】");
@@ -24,26 +22,19 @@ public class Main5 {
 
 		bingoCard.makeBingo();
 
-		for (int i = 1; i <= lottery.getWinningNumbers().size(); i++) {
+		for (int i = 0; i <= bingoCard.getBingoNumbers().size(); i++) {
 			System.out.println("↓抽選する↓");
 			enter();
-			
-			System.out.println();
-			System.out.println((i) + "回目の抽選");
-			System.out.println();
-			System.out.println("当選番号は" + lottery.getWinningNumbers().get(i) + "です！");
 
-			bingoCard.updateBingo(i, lottery.getWinningNumbers());
+			bingoCard.updateBingo(i);
 
-			if (bingoCard.isBingoJudgeSide() ||
-				bingoCard.isBingoJudgeVertical() ||
-				bingoCard.isBingoJudgeSlant()) {
+			if (bingoCard.isBingoJudge()) {
 				break;
 			}
-
 		}
 		System.out.println();
 		System.out.println("ビンゴ！！！");
+		
 	}
 
 	public static void enter() throws IOException { // +++++Enter押すと次の処理が始まる+++++
