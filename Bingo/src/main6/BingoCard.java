@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-import main5.Lottery;
-
 public class BingoCard {
 
 	private Lottery lottery = new Lottery();
