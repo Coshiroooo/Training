@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-	
-	
 
 	public static void main(String[] args) throws IOException {
 
@@ -36,7 +34,7 @@ public class Main {
 		loop: for (int i = 0; i <= bingoCard.getBingoNumbersSize(); i++) {
 			System.out.println("↓抽選する↓");
 			enter();
-
+			
 			bingoCard.pickWinningNumber();
 			printWinning(i, bingoCard.getLottery());
 
