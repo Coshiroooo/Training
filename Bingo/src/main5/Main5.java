@@ -3,12 +3,8 @@ package main5;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 
 public class Main5 {
-	
-	static Scanner scanner = new Scanner(System.in);
-	static int cardWidth;
 
 	public static void main(String[] args) throws IOException {
 
