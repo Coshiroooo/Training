@@ -63,20 +63,20 @@ public class BingoCard {
 		}
 	}
 
-	// 抽選状況に合わせたビンゴカードを作る
-	public void updateBingo(Player player, int i) {
+	// 抽選状況に合わせたそのプレイヤーのビンゴカードを作る
+	public void updateBingo(Player player, int count) {
 
 		System.out.println("【" + player.getPlayerName() + "のビンゴ】");
 
 		int winningNumber = 0;
 
 		for (List<Integer> bcNumbers : player.getMyBingoCard()) {
-			for (int j = 0; j < cardWidth; j++) {
+			for (int i = 0; i < cardWidth; i++) {
 				System.out.print("______");
 			}
 			System.out.println();
 			for (int bcNumber : bcNumbers) { // 取り出したリストを1つずつ処理して繰り返し
-				if (bcNumber == lottery.getCurrentWinningNumbers().get(i)) {
+				if (bcNumber == lottery.getCurrentWinningNumbers().get(count)) {
 					System.out.print("|     ");
 					winningNumber = bcNumber;
 				} else {
@@ -91,12 +91,12 @@ public class BingoCard {
 			System.out.println();
 		}
 
-		for (int j = 0; j < cardWidth; j++) {
+		for (int i = 0; i < cardWidth; i++) {
 			System.out.print("______");
 		}
 		System.out.println();
 		System.out.println();
-		String judge = (winningNumber == lottery.getCurrentWinningNumbers().get(i)) ? "当たり！" : "残念！";
+		String judge = (winningNumber == lottery.getCurrentWinningNumbers().get(count)) ? "当たり！" : "残念！";
 		System.out.println(judge);
 		System.out.println();
 	}
@@ -156,11 +156,9 @@ public class BingoCard {
 		Boolean isBingoJudge = false;
 
 		for (List<Integer> bcNumbers : player.getMyBingoCard()) {
-			List<Integer> exactListSide = new ArrayList<Integer>();
 			int countSide = 0;
-			exactListSide = bcNumbers; // 横1列分のListを作る
 			for (int c : lottery.getCurrentWinningNumbers()) { // 参照した列の中の数字が既出の当選番号に含まれている分だけカウントされる
-				if (exactListSide.contains(c)) {
+				if (bcNumbers.contains(c)) {
 					countSide++;
 				}
 			}
