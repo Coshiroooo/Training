@@ -54,6 +54,7 @@ public class Player {
 	// 他のプレイヤーのカードを一枚引いて自分の手札に入れるメソッド
 	public void pullCard(Player player) {
 		Collections.shuffle(player.getMyHand().getList());
+		System.out.println();
 		System.out.print("【" + name + "】");
 		System.out.println(player.getMyHand().getList().get(0) + "を引きました");
 		this.myHand.getList().add(player.getMyHand().getList().get(0));
@@ -63,13 +64,13 @@ public class Player {
 	//勝利判定
 	public void judge() {
 		System.out.println();
-		if(this.myHand.getList() == null) {
+		if(isWinner()) {
 			System.out.println(name + "はあがり！");
 		}
 	} 
 	
 	public Boolean isWinner() {
-		Boolean isWinner = (this.myHand.getList() == null) ? true : false;
+		Boolean isWinner = (this.myHand.getList().size() == 0) ? true : false;
 		return isWinner;
 	}
 

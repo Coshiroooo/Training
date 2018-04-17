@@ -14,15 +14,15 @@ public class Card {
 	Card(){
 		for(int i = 1; i <= 13; i++) {
 			if(i < 10) {
-				heartCards.add("h0" + i);
-				spadeCards.add("s0" + i);
-				cloverCards.add("c0" + i);
-				diamondCards.add("d0" + i);
+				heartCards.add("♡0" + i);
+				spadeCards.add("♤0" + i);
+				cloverCards.add("♧0" + i);
+				diamondCards.add("♢0" + i);
 			}else {
-				heartCards.add("h" + i);
-				spadeCards.add("s" + i);
-				cloverCards.add("c" + i);
-				diamondCards.add("d" + i);
+				heartCards.add("♡" + i);
+				spadeCards.add("♤" + i);
+				cloverCards.add("♧" + i);
+				diamondCards.add("♢" + i);
 			}
 		}
 		heartCards.forEach(h -> allCards.add(h));
