@@ -6,6 +6,7 @@ public class Main {
 
 	private static Card card = new Card();
 	private static List<Player> allPlayer = new ArrayList<Player>();
+	private static List<String> remainAllCards = new ArrayList<String>();
 	private static int playerNumber = 2;
 
 	public static void main(String[] args) {
@@ -22,39 +23,23 @@ public class Main {
 		allPlayer.forEach(p -> p.throwCards());
 
 		printMyHand();
-		
-		List<String> remainAllCards = new ArrayList<String>();
-		allPlayer.forEach(p -> p.getMyHand().getList().forEach(c -> remainAllCards.add(c)));
-		
+
+		do {
+			remainAllCards = new ArrayList<String>();
 			for (Player player : allPlayer) {
 				int playerIndex = allPlayer.indexOf(player);
 				int nextPlayerIndex = (playerIndex == playerNumber - 1) ? 0 : playerIndex + 1;
 				player.pullCard(allPlayer.get(nextPlayerIndex));
 				player.throwCards();
 				printMyHand();
-				player.judge();
+				if(player.isWinner()) {
+					System.out.println(player.getName() + "はあがり！");
+					break;
+				}
 			}
-
-			for (Player player : allPlayer) {
-				int playerIndex = allPlayer.indexOf(player);
-				int nextPlayerIndex = (playerIndex == playerNumber - 1) ? 0 : playerIndex + 1;
-				player.pullCard(allPlayer.get(nextPlayerIndex));
-				player.throwCards();
-				printMyHand();
-				player.judge();
-			}
-
-	}
-
-	// ゲーム終了判定
-	public static Boolean isEnd() {
-		Boolean isEnd = false;
-		List<String> remainAllCards = new ArrayList<String>();
-		allPlayer.forEach(p -> p.getMyHand().getList().forEach(c -> remainAllCards.add(c)));
-		if (remainAllCards.size() == 1) {
-			isEnd = true;
-		}
-		return isEnd;
+			allPlayer.forEach(p -> p.getMyHand().getList().forEach(c -> remainAllCards.add(c)));
+		} while (remainAllCards.size() > 1);
+		System.out.println("ババ抜き終了！！！");
 	}
 
 	// プレイヤーの手札の状態を表示するメソッド
@@ -65,6 +50,7 @@ public class Main {
 			System.out.println();
 		}
 		System.out.println();
+		System.out.println("---------------------------------------");
 	}
 
 	// カードをプレイヤーに配るメソッド
