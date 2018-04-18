@@ -23,7 +23,7 @@ public class Card {
 				allCards.add("♢" + i);
 			}
 		}
-		for(int i = 0; i < allCards.size(); i++) {
+		for(int i = 0; i < allCards.size() / 4; i++) {
 			sameNumbersList.add(allCards.subList(i*4, (i + 1)*4));
 		}
 		allCards.add("joker");

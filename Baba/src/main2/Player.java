@@ -34,14 +34,20 @@ public class Player {
 			}
 
 			Iterator<String> itSecond = this.myHand.getList().iterator();
-			while (itSecond.hasNext()) {
+			int count = 0;
+			loop:while (itSecond.hasNext()) {
 				String secondStr = itSecond.next();
-				if (card.getSameNumbersList().get(firstStrNumber - 1).contains(secondStr)) {
-					boneYard.getDeadCards().addAll(Arrays.asList(firstStr, secondStr));
-					itFirst.remove();
-					itSecond.remove();
-					break;
+				for (List<String> sameNumbers : card.getSameNumbersList()) {
+					if (sameNumbers.get(firstStrNumber - 1).contains(secondStr)) {
+						boneYard.getDeadCards().addAll(Arrays.asList(firstStr, secondStr));
+						itSecond.remove();
+						count++;
+						break loop;
+					}
 				}
+			}
+			if(count == 1) {
+				itFirst.remove();
 			}
 		}
 	}
