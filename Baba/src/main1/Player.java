@@ -47,12 +47,10 @@ public class Player {
 
 	// 墓地にカードを送るメソッド
 	public void toBoneYard(BoneYard boneYard, List<String> myHand, String firstStr, String secondStr) {
-		boneYard.getDeadCards().add(firstStr);
-		boneYard.getDeadCards().add(secondStr);
+		boneYard.getDeadCards().addAll(Arrays.asList(firstStr,secondStr));
 		myHand.set(myHand.indexOf(firstStr), "null");
 		myHand.set(myHand.indexOf(secondStr), "null");
-		System.out.print("【" + name + "】");
-		System.out.println(firstStr + "," + secondStr + "を捨てました");
+		System.out.println("【" + name + "】" + firstStr + "," + secondStr + "を捨てました");
 	}
 
 	// カードをとる人を決めるメソッド
@@ -70,10 +68,11 @@ public class Player {
 
 	// 他のプレイヤーのカードを一枚引いて自分の手札に入れるメソッド
 	public void pullCard(Player nextPlayer) {
+		
 		Collections.shuffle(nextPlayer.getMyHand().getList());
+		
 		System.out.println();
-		System.out.print("【" + name + "】");
-		System.out.println(nextPlayer.getName() + "さんから" + nextPlayer.getMyHand().getList().get(0) + "を引きました");
+		System.out.println("【" + name + "】" + nextPlayer.getName() + "さんから" + nextPlayer.getMyHand().getList().get(0) + "を引きました");
 		this.myHand.getList().add(nextPlayer.getMyHand().getList().get(0));
 		nextPlayer.getMyHand().getList().remove(0);
 	}
