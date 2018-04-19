@@ -44,21 +44,6 @@ public class Player {
 		}
 	}
 
-	// カードをとる人を決めるメソッド
-	public Player pulledPlayer(List<Player> allPlayer, Player player, int playerNumber) {
-
-		int playerIndex = allPlayer.indexOf(player);
-		int pulledPlayerIndex = (playerIndex == playerNumber - 1) ? 0 : playerIndex + 1;
-		Player pulledPlayer = allPlayer.get(pulledPlayerIndex);
-
-		if (pulledPlayer.isWinner()) {
-			pulledPlayer = pulledPlayer.pulledPlayer(allPlayer, pulledPlayer, playerNumber);
-		}
-
-		return pulledPlayer;
-
-	}
-
 	// カードを引かれ、渡す時のメソッド
 	public Card pulledCard() {
 		Collections.shuffle(myHandList);
@@ -82,14 +67,50 @@ public class Player {
 		return this.myHandList.isEmpty();
 	}
 
+	// プレイヤーの手札の状態を表示するメソッド
+	public void printMyHand() {
+		System.out.print("【" + name + "】：残り" + myHandList.size() + "枚 ");
+		System.out.print("[ ");
+		myHandList.forEach(c -> System.out.print(c.toString() + " "));
+		System.out.println("]");
+	}
+
+	// 捨てるカードを表示するメソッド
+	public void printThrowCards(List<Card> duplicateCards) {
+		for (int i = 0; i < duplicateCards.size(); i += 2) {
+			System.out.print("【" + name + "】");
+			System.out.println(duplicateCards.get(i).toString() + "," + duplicateCards.get(i + 1).toString() + "を捨てました");
+		}
+		System.out.println();
+	}
+
+	// カードのやり取りを表示するメソッド
+	public void printPullCard(Player pulledPlayer, Card pulledCard) {
+		System.out.println("---------------------------------------");
+		System.out.println();
+		System.out.print("【" + name + "】");
+		System.out.print(pulledPlayer.getName() + "さんから");
+		System.out.println(pulledCard.toString() + "を引きました");
+	}
+
+	// 勝利状態を表示するメソッド
+	public void printWinner() {
+		if (isWinner()) {
+			System.out.println(name + "はあがり！");
+		}
+	}
+
+	// 負け状態を表示するメソッド
+	public void printLoser() {
+		if (!isWinner()) {
+			System.out.println(name + "の負け！！！");
+		}
+	}
+
 	// ゲッター
 
 	public String getName() {
 		return this.name;
-	}
-
-	public List<Card> getMyHandList() {
-		return this.myHandList;
 	}
 
 }
