@@ -2,6 +2,7 @@ package main2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Trump {
@@ -17,6 +18,8 @@ public class Trump {
 
 		markList.forEach(m -> numberList.forEach(n -> allCards.add(new Card(m, n))));
 		allCards.add(new Card("joker"));
+		
+		Collections.shuffle(allCards);
 	}
 
 	// ゲッター

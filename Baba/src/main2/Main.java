@@ -1,7 +1,6 @@
 package main2;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,12 +23,12 @@ public class Main {
 			allPlayer.add(new Player(i));
 		}
 
-		dealCards(); //カードを配る
-		printAllHand(); //全員の手札を表示
+		dealCards(); // カードを配る
+		printAllHand(); // 全員の手札を表示
 
-		allPlayer.forEach(p -> deadSpace.addAll(p.pickupDuplicateCards())); //全員手札で重複しているペアを墓地に捨てる
+		allPlayer.forEach(p -> deadSpace.addAll(p.pickupDuplicateCards())); // 全員手札で重複しているペアを墓地に捨てる
 
-		printAllHand(); //全員の手札を表示
+		printAllHand(); // 全員の手札を表示
 
 		do {
 			for (Player player : allPlayer) {
@@ -39,48 +38,37 @@ public class Main {
 				if (player.isWinner()) { // すでにあがっている場合、次のプレイヤーへパス
 					continue;
 				}
+				if(pulledPlayer == player) { //カードを引く人が自分の場合、ゲーム終了
+					break;
+				}
 
-				player.addCard(pulledPlayer, pulledPlayer.pulledCard()); //カードを引いて手札に加える
+				player.addCard(pulledPlayer, pulledPlayer.pulledCard()); // カードを引いて手札に加える
 
-				deadSpace.addAll(player.pickupDuplicateCards()); //数字が重複したペアがあれば墓地に捨てる
+				deadSpace.addAll(player.pickupDuplicateCards()); // 数字が重複したペアがあれば墓地に捨てる
 
-				printAllHand(); //全員の手札を表示
-				allPlayer.forEach(p -> printWinner(p)); //あがった人を表示
+				printAllHand(); // 全員の手札を表示
+				allPlayer.forEach(p -> printWinner(p)); // あがった人を表示
 
 			}
-		} while (deadSpace.size() < trump.getAllCards().size() - 1); //場にjokerの1枚のみ残っていたらゲーム終了
+		} while (deadSpace.size() < trump.getAllCards().size() - 1); // 場にjokerの1枚のみ残っていたらゲーム終了
 
-		end(); //ゲーム終了
+		end(); // ゲーム終了
 
 	}
 
 	// カードをプレイヤーに配るメソッド
 	public static void dealCards() {
 
-		int allCardsNumber = trump.getAllCards().size();
-		int myHandNumber = (int) (allCardsNumber / playerNumber);
-		int remainCards = allCardsNumber % playerNumber;
+		allPlayer.forEach(p -> trump.getAllCards().forEach(c -> {if(trump.getAllCards().indexOf(c) % playerNumber == allPlayer.indexOf(p)) p.addCard(c);}));
+		
+//		for(Player player : allPlayer) {
+//			for(Card card : trump.getAllCards()) {
+//				if(trump.getAllCards().indexOf(card) % playerNumber == allPlayer.indexOf(player)) {
+//					player.addCard(card);
+//				}
+//			}
+//		}
 
-		Collections.shuffle(trump.getAllCards());
-
-		for (Player player : allPlayer) { // 余りは無視して均等に配る
-
-			List<Card> playerMyHand = trump.getAllCards().subList(myHandNumber * allPlayer.indexOf(player),
-					myHandNumber * (allPlayer.indexOf(player) + 1));
-
-			player.addCard(playerMyHand);
-
-		}
-
-		if (remainCards != 0) { // 余ったカードを再分配
-			int count = 0;
-			for (int i = allCardsNumber - 1; i > (allCardsNumber - 1) - remainCards; i--) { // Listの最後尾から順番に分配
-				Card remainCard = trump.getAllCards().get(i);
-				allPlayer.get(count).addCard(remainCard);
-
-				count++;
-			}
-		}
 		System.out.println();
 		System.out.println("カードを配ります");
 	}
