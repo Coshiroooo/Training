@@ -19,9 +19,7 @@ public class Card {
 	
 	//カードの数字が等しいか真偽を判定するメソッド
 	public Boolean isSameNumber(Card card) {
-		Boolean isSameNumber = false;
-		if(card.getNumber() == this.number) isSameNumber = true;
-		return isSameNumber;
+		return card.getNumber() == this.number;
 	}
 	
 	//出力時にカードの情報をStringにするメソッド

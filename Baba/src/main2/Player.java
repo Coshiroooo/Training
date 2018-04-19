@@ -4,83 +4,82 @@ import java.util.*;
 
 public class Player {
 
+	private List<Card> myHandList = new ArrayList<Card>();
 	private String name;
-	private MyHand myHand;
 
 	// コンストラクタ
-	Player(int i) {
+	public Player(int i) {
 		this.name = "Player" + (i + 1);
-		MyHand myHand = new MyHand();
-		this.myHand = myHand;
 	}
 
-	// 重複したカードを墓地に送るメソッド
-	public void throwCards(Card card, BoneYard boneYard) {
+	// 数字が重複している手札ペアを探すメソッド
+	public List<Card> pickupDuplicateCards() {
 
-		Iterator<String> itFirst = this.myHand.getList().iterator();
-		while (itFirst.hasNext()) {
+		List<Card> deadCards = new ArrayList<Card>();
 
-			String firstStr = itFirst.next();
-
-			if (firstStr == "joker") {
-				continue;
-			}
-
-			int firstStrNumber = 0;
-			for (List<String> sameNumbers : card.getSameNumbersList()) {
-				if (sameNumbers.contains(firstStr)) {
-					firstStrNumber = card.getSameNumbersList().indexOf(sameNumbers) + 1;
+		for (Card card1 : this.myHandList) {
+			for (Card card2 : this.myHandList) {
+				if (!card1.equals(card2) && card2.isSameNumber(card1) && card1.getException() != "null"
+						&& card2.getException() != "null") {
+					deadCards.add(card1);
+					deadCards.add(card2);
+					this.myHandList.set(this.myHandList.indexOf(card1), new Card("null"));
+					this.myHandList.set(this.myHandList.indexOf(card2), new Card("null"));
+					break;
 				}
 			}
+		}
+		deleteNullCard(this.myHandList);
+		return deadCards;
+	}
 
-			Iterator<String> itSecond = this.myHand.getList().iterator();
-			int count = 0;
-			loop:while (itSecond.hasNext()) {
-				String secondStr = itSecond.next();
-				for (List<String> sameNumbers : card.getSameNumbersList()) {
-					if (sameNumbers.get(firstStrNumber - 1).contains(secondStr)) {
-						boneYard.getDeadCards().addAll(Arrays.asList(firstStr, secondStr));
-						itSecond.remove();
-						count++;
-						break loop;
-					}
-				}
-			}
-			if(count == 1) {
-				itFirst.remove();
+	// Listからnull要素のあるcardを取り除くメソッド
+	public void deleteNullCard(List<Card> list) {
+		Iterator<Card> it = list.iterator();
+		while (it.hasNext()) {
+			Card card = it.next();
+			if (card.getException() == "null") {
+				it.remove();
 			}
 		}
 	}
 
 	// カードをとる人を決めるメソッド
-	public Player nextPlayer(List<Player> allPlayer, Player player, int playerNumber) {
-		int playerIndex = allPlayer.indexOf(player);
-		int nextPlayerIndex = (playerIndex == playerNumber - 1) ? 0 : playerIndex + 1;
-		Player nextPlayer = allPlayer.get(nextPlayerIndex);
+	public Player pulledPlayer(List<Player> allPlayer, Player player, int playerNumber) {
 
-		if (nextPlayer.isWinner()) {
-			nextPlayer = nextPlayer.nextPlayer(allPlayer, nextPlayer, playerNumber);
+		int playerIndex = allPlayer.indexOf(player);
+		int pulledPlayerIndex = (playerIndex == playerNumber - 1) ? 0 : playerIndex + 1;
+		Player pulledPlayer = allPlayer.get(pulledPlayerIndex);
+
+		if (pulledPlayer.isWinner()) {
+			pulledPlayer = pulledPlayer.pulledPlayer(allPlayer, pulledPlayer, playerNumber);
 		}
 
-		return nextPlayer;
+		return pulledPlayer;
+
 	}
 
-	// 他のプレイヤーのカードを一枚引いて自分の手札に入れるメソッド
-	public void pullCard(Player nextPlayer) {
+	// カードを引かれ、渡す時のメソッド
+	public Card pulledCard() {
+		Collections.shuffle(myHandList);
+		Card pulledCard = this.myHandList.get(0);
+		this.myHandList.remove(0);
+		return pulledCard;
+	}
 
-		Collections.shuffle(nextPlayer.getMyHand().getList());
+	// 渡されたカードを自分の手札に入れるメソッド
+	public void addCard(Card card) {
+		myHandList.add(card);
+	}
 
-		System.out.println();
-		System.out.println(
-				"【" + name + "】" + nextPlayer.getName() + "さんから" + nextPlayer.getMyHand().getList().get(0) + "を引きました");
-		this.myHand.getList().add(nextPlayer.getMyHand().getList().get(0));
-		nextPlayer.getMyHand().getList().remove(0);
+	// 渡されたカードのListを自分の手札に入れるメソッド（オーバーロード）
+	public void addCard(List<Card> cards) {
+		myHandList.addAll(cards);
 	}
 
 	// 勝利判定
 	public Boolean isWinner() {
-		Boolean isWinner = (this.myHand.getList().size() == 0) ? true : false;
-		return isWinner;
+		return this.myHandList.isEmpty();
 	}
 
 	// ゲッター
@@ -89,8 +88,8 @@ public class Player {
 		return this.name;
 	}
 
-	public MyHand getMyHand() {
-		return this.myHand;
+	public List<Card> getMyHandList() {
+		return this.myHandList;
 	}
 
 }
