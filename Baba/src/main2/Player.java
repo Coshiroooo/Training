@@ -11,27 +11,34 @@ public class Player {
 	public Player(int i) {
 		this.name = "Player" + (i + 1);
 	}
-
-	// 数字が重複している手札ペアを探すメソッド
-	public List<Card> pickupDuplicateCards() {
-
+	
+	//数字が重複している手札ペアを探すメソッド
+	public List<Card> pickupDuplicateCards(){
 		List<Card> deadCards = new ArrayList<Card>();
-
-		for (Card card1 : this.myHandList) {
-			for (Card card2 : this.myHandList) {
-				if (!card1.equals(card2) && card2.isSameNumber(card1) && card1.getException() != "null"
-						&& card2.getException() != "null") {
-					deadCards.add(card1);
-					deadCards.add(card2);
-					this.myHandList.set(this.myHandList.indexOf(card1), new Card("null"));
-					this.myHandList.set(this.myHandList.indexOf(card2), new Card("null"));
-					break;
-				}
+		
+		Collections.sort(myHandList,new Comparator<Card>() {
+			@Override
+			public int compare(Card card1,Card card2) {
+				return card1.getNumber() - card2.getNumber();
+			}
+		});
+		
+		for(Card card : myHandList) {
+			int nextCardIndex = myHandList.indexOf(card) + 1;
+			if(card.getException() == "null") continue;
+			if(nextCardIndex == myHandList.size()) break;
+			Card nextCard = myHandList.get(nextCardIndex);
+			
+			if(card.isSameNumber(nextCard)) {
+				deadCards.add(card);
+				deadCards.add(nextCard);
+				myHandList.set(myHandList.indexOf(card), new Card("null"));
+				myHandList.set(myHandList.indexOf(nextCard), new Card("null"));
 			}
 		}
-		deleteNullCard(this.myHandList);
+		deleteNullCard(myHandList);
 		printThrowCards(deadCards);
-
+		
 		return deadCards;
 	}
 
