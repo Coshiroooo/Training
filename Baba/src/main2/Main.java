@@ -68,6 +68,10 @@ public class Main {
 //				}
 //			}
 //		}
+		
+//		for(Card card : trump.getAllCards()) {
+//			allPlayer.get(trump.getAllCards().indexOf(card) % playerNumber).addCard(card);
+//		}
 
 		System.out.println();
 		System.out.println("カードを配ります");
