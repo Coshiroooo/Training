@@ -24,19 +24,12 @@ public class Main {
 			allPlayer.add(new Player(i));
 		}
 
-		dealCards();
-		printAllHand();
+		dealCards(); //カードを配る
+		printAllHand(); //全員の手札を表示
 
-		for (Player player : allPlayer) {
+		allPlayer.forEach(p -> deadSpace.addAll(p.pickupDuplicateCards())); //全員手札で重複しているペアを墓地に捨てる
 
-			List<Card> duplicateCards = player.pickupDuplicateCards();
-			deadSpace.addAll(duplicateCards);
-
-			player.printThrowCards(duplicateCards);
-
-		}
-
-		printAllHand();
+		printAllHand(); //全員の手札を表示
 
 		do {
 			for (Player player : allPlayer) {
@@ -44,30 +37,20 @@ public class Main {
 				Player pulledPlayer = toPulledPlayer(player); // カードを引かれる人
 
 				if (player.isWinner()) { // すでにあがっている場合、次のプレイヤーへパス
-					player = pulledPlayer;
 					continue;
 				}
 
-				if (pulledPlayer == player) {
-					break; // 次にカードを引く人が自分になってしまったら、ゲーム終了
-				}
+				player.addCard(pulledPlayer, pulledPlayer.pulledCard()); //カードを引いて手札に加える
 
-				Card pulledCard = pulledPlayer.pulledCard();
-				player.addCard(pulledCard);
+				deadSpace.addAll(player.pickupDuplicateCards()); //数字が重複したペアがあれば墓地に捨てる
 
-				player.printPullCard(pulledPlayer, pulledCard);
-
-				List<Card> duplicateCards = player.pickupDuplicateCards();
-				deadSpace.addAll(duplicateCards);
-
-				player.printThrowCards(duplicateCards);
-				printAllHand();
-				allPlayer.forEach(p -> p.printWinner());
+				printAllHand(); //全員の手札を表示
+				allPlayer.forEach(p -> printWinner(p)); //あがった人を表示
 
 			}
-		} while (deadSpace.size() < trump.getAllCards().size() - 1);
+		} while (deadSpace.size() < trump.getAllCards().size() - 1); //場にjokerの1枚のみ残っていたらゲーム終了
 
-		end();
+		end(); //ゲーム終了
 
 	}
 
@@ -101,7 +84,7 @@ public class Main {
 		System.out.println();
 		System.out.println("カードを配ります");
 	}
-	
+
 	// プレイヤーが次にカードをとる人を決めるメソッド
 	public static Player toPulledPlayer(Player player) {
 
@@ -117,18 +100,32 @@ public class Main {
 
 	}
 
-	//全員の手札を表示するメソッド
+	// 全員の手札を表示するメソッド
 	public static void printAllHand() {
 		allPlayer.forEach(p -> p.printMyHand());
 		System.out.println();
 		System.out.println("---------------------------------------");
 	}
 
+	// 勝利状態を表示するメソッド
+	public static void printWinner(Player player) {
+		if (player.isWinner()) {
+			System.out.println(player.getName() + "はあがり！");
+		}
+	}
+
+	// 負け状態を表示するメソッド
+	public static void printLoser(Player player) {
+		if (!player.isWinner()) {
+			System.out.println(player.getName() + "の負け！！！");
+		}
+	}
+
 	// ゲーム終了
 	public static void end() {
 		System.out.println("---------------------------------------");
 		System.out.println();
-		allPlayer.forEach(p -> p.printLoser());
+		allPlayer.forEach(p -> printLoser(p));
 		System.out.println("ババ抜き終了！！！");
 	}
 
