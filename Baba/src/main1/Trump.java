@@ -8,10 +8,8 @@ public class Trump {
 	
 	//コンストラクタ
 	Trump(){
-		List<String> markList = new ArrayList<String>();
+		List<String> markList = Arrays.asList("♡","♤","♧","♢");
 		List<Integer> numberList = new ArrayList<Integer>();
-		
-		markList.addAll(Arrays.asList("♡","♤","♧","♢"));
 		for(int i = 1; i <= 13; i++) numberList.add(i);
 		
 		markList.forEach(m -> numberList.forEach(n -> allCards.add(new Card(m,n))));

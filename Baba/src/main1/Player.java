@@ -47,7 +47,9 @@ public class Player {
 		int nextPlayerIndex = (playerIndex == playerNumber - 1) ? 0 : playerIndex + 1;
 		Player nextPlayer = allPlayer.get(nextPlayerIndex);
 
-		if (nextPlayer.isWinner()) nextPlayer = nextPlayer.nextPlayer(allPlayer, nextPlayer, playerNumber);
+		if (nextPlayer.isWinner()) {
+			nextPlayer = nextPlayer.nextPlayer(allPlayer, nextPlayer, playerNumber);
+		}
 
 		return nextPlayer;
 	}

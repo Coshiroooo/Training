@@ -31,7 +31,7 @@ public class Main {
 
 				Player nextPlayer = player.nextPlayer(allPlayer, player, playerNumber);
 
-				if (player.isWinner()) { // カードを引かれてあがった場合、次のプレイヤーへパス
+				if (player.isWinner()) { // すでにあがっている場合、次のプレイヤーへパス
 					player = nextPlayer;
 					continue;
 				}
