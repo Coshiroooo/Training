@@ -37,10 +37,6 @@ public class Card {
 		return this.number;
 	}
 	
-	public String getMark() {
-		return this.mark;
-	}
-	
 	public String getException() {
 		return this.exception;
 	}

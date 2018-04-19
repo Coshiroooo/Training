@@ -25,23 +25,23 @@ public class Main {
 		}
 
 		dealCards();
-		printMyHand();
+		printAllHand();
 
 		for (Player player : allPlayer) {
 
 			List<Card> duplicateCards = player.pickupDuplicateCards();
 			deadSpace.addAll(duplicateCards);
 
-			printThrowCards(player, duplicateCards);
+			player.printThrowCards(duplicateCards);
 
 		}
 
-		printMyHand();
+		printAllHand();
 
 		do {
 			for (Player player : allPlayer) {
 
-				Player pulledPlayer = player.pulledPlayer(allPlayer, player, playerNumber); // カードを引かれる人
+				Player pulledPlayer = toPulledPlayer(player); // カードを引かれる人
 
 				if (player.isWinner()) { // すでにあがっている場合、次のプレイヤーへパス
 					player = pulledPlayer;
@@ -55,14 +55,14 @@ public class Main {
 				Card pulledCard = pulledPlayer.pulledCard();
 				player.addCard(pulledCard);
 
-				printPullCard(player, pulledPlayer, pulledCard);
+				player.printPullCard(pulledPlayer, pulledCard);
 
 				List<Card> duplicateCards = player.pickupDuplicateCards();
 				deadSpace.addAll(duplicateCards);
 
-				printThrowCards(player, duplicateCards);
-				printMyHand();
-				allPlayer.forEach(p -> printWinner(p));
+				player.printThrowCards(duplicateCards);
+				printAllHand();
+				allPlayer.forEach(p -> p.printWinner());
 
 			}
 		} while (deadSpace.size() < trump.getAllCards().size() - 1);
@@ -101,48 +101,34 @@ public class Main {
 		System.out.println();
 		System.out.println("カードを配ります");
 	}
+	
+	// プレイヤーが次にカードをとる人を決めるメソッド
+	public static Player toPulledPlayer(Player player) {
 
-	// プレイヤーの手札の状態を表示するメソッド
-	public static void printMyHand() {
-		for (Player player : allPlayer) {
-			System.out.print("【" + player.getName() + "】：残り" + player.getMyHandList().size() + "枚 ");
-			System.out.print("[ ");
-			player.getMyHandList().forEach(c -> System.out.print(c.toString() + " "));
-			System.out.println("]");
+		int playerIndex = allPlayer.indexOf(player);
+		int pulledPlayerIndex = (playerIndex == playerNumber - 1) ? 0 : playerIndex + 1;
+		Player pulledPlayer = allPlayer.get(pulledPlayerIndex);
+
+		if (pulledPlayer.isWinner()) {
+			pulledPlayer = toPulledPlayer(pulledPlayer);
 		}
+
+		return pulledPlayer;
+
+	}
+
+	//全員の手札を表示するメソッド
+	public static void printAllHand() {
+		allPlayer.forEach(p -> p.printMyHand());
 		System.out.println();
 		System.out.println("---------------------------------------");
 	}
 
-	// 捨てるカードを表示するメソッド
-	public static void printThrowCards(Player player, List<Card> duplicateCards) {
-		for (int i = 0; i < duplicateCards.size() / 2; i++) {
-			System.out.println("【" + player.getName() + "】" + duplicateCards.get(i * 2).toString() + ","
-					+ duplicateCards.get(i * 2 + 1).toString() + "を捨てました");
-		}
-		System.out.println();
-	}
-
-	// カードのやり取りを表示するメソッド
-	public static void printPullCard(Player player, Player pulledPlayer, Card pulledCard) {
-		System.out.print("【" + player.getName() + "】");
-		System.out.print(pulledPlayer.getName() + "さんから");
-		System.out.println(pulledCard.toString() + "を引きました");
-	}
-
-	// 勝利したプレイヤーを表示するメソッド
-	public static void printWinner(Player player) {
-		if (player.isWinner())
-			System.out.println(player.getName() + "はあがり！");
-	}
-
 	// ゲーム終了
 	public static void end() {
+		System.out.println("---------------------------------------");
 		System.out.println();
-		for (Player player : allPlayer) {
-			if (!player.isWinner())
-				System.out.println(player.getName() + "の負け！！！");
-		}
+		allPlayer.forEach(p -> p.printLoser());
 		System.out.println("ババ抜き終了！！！");
 	}
 
