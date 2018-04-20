@@ -6,6 +6,8 @@ public class Square {
 
 	private String box;
 	private int number;
+	private final static String white = "◎";
+	private final static String black = "◉";
 	private String state = "valid";
 	private Map<String,Square> aroundSquares = new HashMap<String,Square>();
 	
@@ -25,8 +27,27 @@ public class Square {
 		this.box = stone;
 	}
 	
+	//隣のマスが違う色の石かを判定するメソッド
+	public Boolean isDiffirentColor(String key) {
+		Boolean isDiffirentColor = false;
+		if(this.box == white) {
+			if(aroundSquares.get(key).getBox() == black) {
+				isDiffirentColor = true;
+			}
+		}else if(this.box == black) {
+			if(aroundSquares.get(key).getBox() == white) {
+				isDiffirentColor = true;
+			}
+		}
+		return isDiffirentColor;
+	}
+	
 	public void printSquare() {
 		System.out.print(" " + box + " ");
+	}
+	
+	public void inputAroundSquares(Map<String,Square> aroundSquares){
+		this.aroundSquares = aroundSquares;
 	}
 	
 	public int getNumber() {
@@ -35,10 +56,6 @@ public class Square {
 	
 	public String getBox() {
 		return this.box;
-	}
-	
-	public void inputAroundSquares(Map<String,Square> aroundSquares){
-		this.aroundSquares = aroundSquares;
 	}
 	
 }
