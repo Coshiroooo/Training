@@ -21,11 +21,12 @@ public class Board {
 
 		for (List<Square> squareLine : boardSquares) {
 			for (Square square : squareLine) {
-				square.inputAroundSquares(creatAroundSquares(square));
+				square.setAroundSquares(creatAroundSquares(square));
 			}
 		}
 	}
 
+	//ボードをゲームスタート時の状態にするメソッド
 	public void setUp(Player player1, Player player2) {
 		installStone(width / 2 - 1, width / 2 - 1, player1.putStone());
 		installStone(width / 2, width / 2 - 1, player2.putStone());
@@ -127,7 +128,7 @@ public class Board {
 		}
 	}
 
-	// 全方位に石をひっくり返す処理をするメソッド
+	// 8方位にある挟まれている石をひっくり返す処理をするメソッド
 	public void turnOverAllAmongStone(int squareNumber) {
 		for (String key : getSquare(squareNumber).getAroundSquares().keySet()) {
 			turnOverAmongStone(squareNumber, key);
@@ -135,28 +136,28 @@ public class Board {
 		System.out.println();
 	}
 
-	// 8方位のうち1方位、石を置いたら挟まれた違う色の石をひっくり返すメソッド
+	// 8方位のうち1方位、石を置いたら挟まれる違う色の石をひっくり返すメソッド
 	public void turnOverAmongStone(int squareNumber, String key) {
-		
+
 		Square square = getSquare(squareNumber); // 置いた石を呼び出す
 		int count = 0; // ひっくり返す石の数
-		
-		count = countAmongStone(square,count,key);
-		
+
+		count = countAmongStone(square, count, key);
+
 		if (count == 0) { // 1つもひっくり返す石がなかったらおしまい
 			return;
 		}
 
-		do { //カウントの数だけ、隣の石をひっくり返す
+		do { // カウントの数だけ、隣の石をひっくり返す
 			Square nextSquare = square.getAroundSquares().get(key);
 			nextSquare.turnOverStone();
 			square = nextSquare;
 			count--;
 		} while (count > 0);
 	}
-	
-	//挟まれている石が何個あるか数えるメソッド
-	public int countAmongStone(Square square,int count,String key) {
+
+	// 挟まれている石が何個あるか数えるメソッド
+	public int countAmongStone(Square square, int count, String key) {
 		if (square.isDifferentColor(key)) { // 隣のマスが違う色だったら
 			count++; // 1つひっくり返る
 			Square nextSquare = square.getAroundSquares().get(key); // 隣の石を呼び出す
@@ -182,54 +183,64 @@ public class Board {
 			return count;
 		}
 	}
-	
-	public Boolean isTurnOver(int squareNumber,Player player,String key) {
+
+	//そのマス目に石を置いたらその方位で石がひっくり返ることがあるかを判定するメソッド
+	public Boolean isTurnOver(int squareNumber, Player player, String key) {
 		Square square = getSquare(squareNumber);
 		square.strageStone(new Stone(player.getPlayerColor()));
 		int count = 0; // ひっくり返す石の数
-		
-		count = countAmongStone(square,count,key);
-		
+
+		count = countAmongStone(square, count, key);
+
 		square.strageStone(null);
 		square.setBox(square.getNumberS());
-		
-		if(count > 0) {
-			return true;
-		}else {
-			return false;
-		}
+
+		return count > 0;
 	}
-	
-	//そのマス目に石を置いたら色が変わるかを判定するメソッド
-	public Boolean isPutStone(int squareNumber,Player player) {
+
+	// そのマス目に石を置いたらひっくり返る石があるかを判定するメソッド
+	public Boolean isPutStone(int squareNumber, Player player) {
 		List<Boolean> isPutStone = new ArrayList<Boolean>();
-		for(String key : getSquare(squareNumber).getAroundSquares().keySet()) {
-			isPutStone.add(isTurnOver(squareNumber,player,key));
+		for (String key : getSquare(squareNumber).getAroundSquares().keySet()) {
+			isPutStone.add(isTurnOver(squareNumber, player, key));
 		}
 		return isPutStone.contains(true);
 	}
-	
-	public void notPutStone(Player player) {
+
+	// 石を置けないマス目は非表示にするメソッド
+	public void onlyPutStone(Player player) {
 		System.out.println();
-		for(List<Square> squareList : boardSquares) {
-			for(Square square : squareList) {
-				if(square.getStone() == null && !isPutStone(square.getNumber(),player)) {
+		for (List<Square> squareList : boardSquares) {
+			for (Square square : squareList) {
+				if (square.getStone() == null && !isPutStone(square.getNumber(), player)) {
 					square.setBox("--");
 				}
 			}
 		}
 	}
-	
+
+	// 非表示状態にあったマス目を元に戻すメソッド
 	public void returnBoard() {
-		for(List<Square> squareList : boardSquares) {
-			for(Square square : squareList) {
-				if(square.getStone() == null) {
+		for (List<Square> squareList : boardSquares) {
+			for (Square square : squareList) {
+				if (square.getStone() == null) {
 					square.setBox(square.getNumberS());
 				}
 			}
 		}
 	}
-	
+
+	//石を置く場所があるか否かを判定するメソッド
+	public Boolean isPut() {
+		List<Boolean> isPut = new ArrayList<Boolean>();
+		for (List<Square> squareList : boardSquares) {
+			for (Square square : squareList) {
+				isPut.add(square.getStone() == null && !"--".equals(square.getBox()));
+			}
+		}
+		return isPut.contains(true);
+	}
+
 	// Squareの周りのSquareを取得したMapを生成するメソッド
 	public Map<String, Square> creatAroundSquares(Square square) {
 
