@@ -5,28 +5,26 @@ import java.util.*;
 public class Player {
 
 	private String name;
-	private String stone;
-	private final String white = "◎";
-	private final String black = "◉";
+	private String playerColor;
 	private Scanner scanner = new Scanner(System.in);
 
 	// コンストラクタ
-	Player(String name, String stone) {
+	Player(String name, String color) {
 		this.name = name;
-		this.stone = stone;
+		this.playerColor = color;
 	}
 
 	// Profileを表示するメソッド
 	public void printProfile() {
-		System.out.println(name + ":" + stone);
+		System.out.println(name + ":" + this.playerColor);
 	}
 
 	public int inputSquareNumber() {
 		System.out.println();
 		System.out.println("【" + name + "のターン】");
-		System.out.print(stone + "を置くマス目の数字を入力してください：");
+		System.out.print(playerColor + "を置くマス目の数字を入力してください：");
 		int squareNumber = scanner.nextInt();
-		System.out.println(squareNumber + "のマスに" + stone + "を置きます");
+		System.out.println(squareNumber + "のマスに" + playerColor+ "を置きます");
 		System.out.println();
 		return squareNumber;
 	}
@@ -36,8 +34,8 @@ public class Player {
 		return this.name;
 	}
 	
-	public String getStone() {
-		return this.stone;
+	public String getPlayerColor() {
+		return this.playerColor;
 	}
 
 }
