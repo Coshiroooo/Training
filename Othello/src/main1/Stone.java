@@ -2,8 +2,8 @@ package main1;
 
 public class Stone {
 	
-	private final String white = "◎";
-	private final String black = "◉";
+	private final String white = "◯";
+	private final String black = "★";
 	private String frontColor;
 	private String backColor;
 	
@@ -25,6 +25,8 @@ public class Stone {
 		this.frontColor = this.backColor;
 		this.backColor = color;
 	}
+	
+	//ゲッター
 	
 	public String getFrontColor() {
 		return this.frontColor;

@@ -50,10 +50,18 @@ public class Square {
 		System.out.print(" " + box + " ");
 	}
 
-	public void inputAroundSquares(Map<String, Square> aroundSquares) {
+	//セッター
+	
+	public void setAroundSquares(Map<String, Square> aroundSquares) {
 		this.aroundSquares = aroundSquares;
 	}
+	
+	public void setBox(String box) {
+		this.box = box;
+	}
 
+	//ゲッター
+	
 	public int getNumber() {
 		return this.number;
 	}
@@ -72,10 +80,6 @@ public class Square {
 
 	public Map<String, Square> getAroundSquares() {
 		return this.aroundSquares;
-	}
-
-	public void setBox(String box) {
-		this.box = box;
 	}
 
 }

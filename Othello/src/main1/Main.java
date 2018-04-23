@@ -20,17 +20,32 @@ public class Main {
 
 		do {
 			for (Player player : allPlayer) {
-				board.notPutStone(player);
+				
+				board.onlyPutStone(player);
 				board.printBoard();
+				
+				int count = 0;
+				if (!board.isPut()) {
+					count++;
+					if (count > 1) {
+						break;
+					}
+					System.out.println("石を置く場所がないのでスキップします");
+					continue;
+				}
+				
 				int squareNumber = player.inputSquareNumber();
 				board.installStone(squareNumber, player.putStone());
 				board.turnOverAllAmongStone(squareNumber);
+				
 				board.returnBoard();
 				board.printBoard();
+				
 				printCountStone();
+				
 			}
 		} while (board.isContinue(player1, player2));
-		
+
 		board.printJudge(player1, player2);
 
 	}
@@ -43,11 +58,10 @@ public class Main {
 		System.out.println();
 	}
 
+	//各プレイヤーの石の数を数えるメソッド
 	public static void printCountStone() {
-		System.out.println(
-				"【" + player1.getName() + "】" + player1.getPlayerColor() + "：" + board.countStone(player1));
-		System.out.println(
-				"【" + player2.getName() + "】" + player2.getPlayerColor() + "：" + board.countStone(player2));
+		System.out.println("【" + player1.getName() + "】" + player1.getPlayerColor() + "：" + board.countStone(player1));
+		System.out.println("【" + player2.getName() + "】" + player2.getPlayerColor() + "：" + board.countStone(player2));
 	}
 
 }
