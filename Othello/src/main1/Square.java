@@ -7,8 +7,7 @@ public class Square {
 	private String box;
 	private int number;
 	private String numberS;
-	private final String white = "◎";
-	private final String black = "◉";
+	private Stone stone;
 	private Map<String, Square> aroundSquares = new HashMap<String, Square>();
 
 	// コンストラクタ
@@ -24,42 +23,27 @@ public class Square {
 	}
 
 	// マス目に石が格納されるメソッド
-	public void strageStone(String stone) {
-		this.box = stone;
-	}
-
-	// 色をひっくり返すメソッド
-	public String changeColor(String color) {
-		if (color.equals(white)) {
-			color = black;
-		} else if (color.equals(black)) {
-			color = white;
-		}
-		return color;
+	public void strageStone(Stone stone) {
+		this.stone = stone;
+		this.box = this.stone.getFrontColor();
 	}
 
 	// 隣のマスが違う色の石かを判定するメソッド
 	public Boolean isDifferentColor(String key) {
 		Boolean isDifferentColor = false;
-		if ((this.box.equals(white) || this.box.equals(black))
-				&& aroundSquares.get(key).getBox().equals(changeColor(this.box))) {
+		if (this.stone != null && aroundSquares.get(key).getBox().equals(this.stone.getBackColor())) {
 			isDifferentColor = true;
 		}
 		return isDifferentColor;
 	}
-	
-	// 隣の石の色をひっくり返したらその隣の石もひっくり返すのをcount回繰り返すメソッド
-	public void turnOver(Square square, int count, String key) {
-		Square nextSquare = aroundSquares.get(key);
-		if (count == 0) {
-			return;
-		}
-		nextSquare.strageStone(nextSquare.changeColor(nextSquare.getBox()));
-		count--;
-		turnOver(nextSquare, count, key);
+
+	//石をひっくり返すメソッド
+	public void turnOverStone() {
+		this.stone.turnOver();
+		this.box = this.stone.getFrontColor();
 	}
 
-	//マス目を表示する
+	// マス目を表示する
 	public void printSquare() {
 		System.out.print(" " + box + " ");
 	}
@@ -71,9 +55,13 @@ public class Square {
 	public int getNumber() {
 		return this.number;
 	}
-	
+
 	public String getNumberS() {
 		return this.numberS;
+	}
+
+	public Stone getStone() {
+		return this.stone;
 	}
 
 	public String getBox() {

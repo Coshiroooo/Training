@@ -11,7 +11,8 @@ public class Player {
 	// コンストラクタ
 	Player(String name, String color) {
 		this.name = name;
-		this.playerColor = color;
+		Stone stone = new Stone(color);
+		this.playerColor = stone.getFrontColor();
 	}
 
 	// Profileを表示するメソッド
@@ -19,6 +20,7 @@ public class Player {
 		System.out.println(name + ":" + this.playerColor);
 	}
 
+	//石を置く場所を決めるメソッド
 	public int inputSquareNumber() {
 		System.out.println();
 		System.out.println("【" + name + "のターン】");
@@ -27,6 +29,12 @@ public class Player {
 		System.out.println(squareNumber + "のマスに" + playerColor+ "を置きます");
 		System.out.println();
 		return squareNumber;
+	}
+	
+	//石を置くメソッド
+	public Stone putStone() {
+		Stone stone = new Stone(playerColor);
+		return stone;
 	}
 
 	// ゲッター

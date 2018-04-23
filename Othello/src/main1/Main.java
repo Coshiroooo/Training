@@ -4,11 +4,9 @@ import java.util.*;
 
 public class Main {
 
-	private final static String white = "◎";
-	private final static String black = "◉";
-	private static Player player1 = new Player("Player1", white);
-	private static Player player2 = new Player("Player2", black);
-	private static Board board = new Board(player1,player2);
+	private static Board board = new Board();
+	private static Player player1 = new Player("Player1", "white");
+	private static Player player2 = new Player("Player2", "black");
 	private static List<Player> allPlayer = Arrays.asList(player1, player2);
 
 	public static void main(String[] args) {
@@ -17,13 +15,14 @@ public class Main {
 
 		printPlayerProfile();
 
+		board.setUp(player1, player2);
 		board.printBoard();
 
 		do {
 			for (Player player : allPlayer) {
 				int squareNumber = player.inputSquareNumber();
-				board.changeSquare(squareNumber, player.getPlayerColor());
-				board.changeAmongStoneAll(squareNumber);
+				board.installStone(squareNumber, player.putStone());
+				board.turnOverAllAmongStone(squareNumber);
 				board.printBoard();
 				printCountStone();
 			}
@@ -43,9 +42,9 @@ public class Main {
 
 	public static void printCountStone() {
 		System.out.println(
-				"【" + player1.getName() + "】" + player1.getPlayerColor() + "：" + board.countStone(player1.getPlayerColor()));
+				"【" + player1.getName() + "】" + player1.getPlayerColor() + "：" + board.countStone(player1));
 		System.out.println(
-				"【" + player2.getName() + "】" + player2.getPlayerColor() + "：" + board.countStone(player2.getPlayerColor()));
+				"【" + player2.getName() + "】" + player2.getPlayerColor() + "：" + board.countStone(player2));
 	}
 
 }
