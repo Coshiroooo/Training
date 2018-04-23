@@ -7,8 +7,8 @@ public class Square {
 	private String box;
 	private int number;
 	private String numberS;
-	private final static String white = "◎";
-	private final static String black = "◉";
+	private final String white = "◎";
+	private final String black = "◉";
 	private Map<String, Square> aroundSquares = new HashMap<String, Square>();
 
 	// コンストラクタ
@@ -23,8 +23,8 @@ public class Square {
 		this.box = state;
 	}
 
-	// 石を置くメソッド
-	public void putStone(String stone) {
+	// マス目に石が格納されるメソッド
+	public void strageStone(String stone) {
 		this.box = stone;
 	}
 
@@ -47,7 +47,19 @@ public class Square {
 		}
 		return isDifferentColor;
 	}
+	
+	// 隣の石の色をひっくり返したらその隣の石もひっくり返すのをcount回繰り返すメソッド
+	public void turnOver(Square square, int count, String key) {
+		Square nextSquare = aroundSquares.get(key);
+		if (count == 0) {
+			return;
+		}
+		nextSquare.strageStone(nextSquare.changeColor(nextSquare.getBox()));
+		count--;
+		turnOver(nextSquare, count, key);
+	}
 
+	//マス目を表示する
 	public void printSquare() {
 		System.out.print(" " + box + " ");
 	}

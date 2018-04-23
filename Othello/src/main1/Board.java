@@ -5,12 +5,10 @@ import java.util.*;
 public class Board {
 
 	private int width = 8;
-	private final String white = "◎";
-	private final String black = "◉";
 	private List<List<Square>> boardSquares = new ArrayList<List<Square>>();
 
 	// コンストラクタ
-	Board() {
+	Board(Player player1,Player player2) {
 		List<Square> squares = new ArrayList<Square>();
 		for (int i = 1; i <= Math.pow(width, 2); i++) {
 			squares.add(new Square(i));
@@ -25,10 +23,10 @@ public class Board {
 			}
 		}
 
-		changeSquare(width / 2 - 1, width / 2 - 1, black);
-		changeSquare(width / 2, width / 2 - 1, white);
-		changeSquare(width / 2 - 1, width / 2, white);
-		changeSquare(width / 2, width / 2, black);
+		putStone(width / 2 - 1, width / 2 - 1, player1.getPlayerColor());
+		putStone(width / 2, width / 2 - 1, player2.getPlayerColor());
+		putStone(width / 2 - 1, width / 2, player1.getPlayerColor());
+		putStone(width / 2, width / 2, player2.getPlayerColor());
 	}
 
 	// ボードの状態を表示する
@@ -53,8 +51,8 @@ public class Board {
 	}
 
 	// 指定した座標に石を置くメソッド
-	public void changeSquare(int x, int y, String stone) {
-		boardSquares.get(y).get(x).putStone(stone);
+	public void putStone(int x, int y, String stone) {
+		boardSquares.get(y).get(x).strageStone(stone);
 	}
 
 	// マス目の番号入力するとそこに石を置いてくれるメソッド
@@ -67,7 +65,7 @@ public class Board {
 		if (x == -1) {
 			x = width - 1;
 		}
-		changeSquare(x, y, stone);
+		putStone(x, y, stone);
 	}
 
 	// マス目の数字を入れるとそのマス目を返してくれるメソッド
@@ -98,7 +96,7 @@ public class Board {
 	
 	//ゲーム続行条件を示すメソッド
 	public Boolean isContinue(Player player1,Player player2) {
-		int allStone = countStone(player1.getStone()) + countStone(player2.getStone());
+		int allStone = countStone(player1.getPlayerColor()) + countStone(player2.getPlayerColor());
 		if(allStone < Math.pow(width, 2)) {
 			return true;
 		}else {
@@ -108,8 +106,8 @@ public class Board {
 	
 	//勝利判定をするメソッド
 	public void printJudge(Player player1,Player player2) {
-		int count1 = countStone(player1.getStone());
-		int count2 = countStone(player2.getStone());
+		int count1 = countStone(player1.getPlayerColor());
+		int count2 = countStone(player2.getPlayerColor());
 		System.out.println();
 		
 		if(count1 > count2) {
@@ -129,7 +127,7 @@ public class Board {
 		System.out.println();
 	}
 
-	// 石を置いたら挟まれた違う色の石をひっくり返すメソッド
+	// 8方位のうち1方位、石を置いたら挟まれた違う色の石をひっくり返すメソッド
 	public void changeAmongStone(int squareNumber, String key) {
 		Square square = getSquare(squareNumber); // 置いた石を呼び出す
 		int count = 0; // ひっくり返す石の数
@@ -137,28 +135,18 @@ public class Board {
 		if (square.isDifferentColor(key)) { // 隣のマスが違う色だったら
 			count++; // 1つひっくり返るかも
 			Square nextSquare = square.getAroundSquares().get(key); // 隣の石を呼び出す
-			count = countAmongStone(nextSquare, count, key); // 同じ色が何個続くか //count =を忘れてた
+			count = countAmongStone(nextSquare, count, key); // 同じ色が何個続くか
 		}
 		if (count == 0) { // 1つもひっくり返す石がなかったらおしまい
 			return;
 		}
-		change(square, count, key); // 間にある個数だけひっくり返す
-	}
-
-	// 隣の石の色をひっくり返したらその隣の石もひっくり返すのをcount回繰り返すメソッド
-	public void change(Square square, int count, String key) {
-		Square nextSquare = square.getAroundSquares().get(key);
-		if (count == 0) {
-			return;
-		}
-		nextSquare.putStone(nextSquare.changeColor(nextSquare.getBox()));
-		count--;
-		change(nextSquare, count, key);
+		square.turnOver(square, count, key); // 間にある個数だけひっくり返す
 	}
 
 	// 挟まれている石が何個あるか数えるメソッド
 	public int countAmongStone(Square square, int count, String key) {
 		Square nextSquare = square.getAroundSquares().get(key);
+		
 		if (!square.isDifferentColor(key) && !nextSquare.getBox().equals(nextSquare.getNumberS())
 				&& !"null".equals(nextSquare.getBox())) { // 隣が同じ色だったら
 			count++;
