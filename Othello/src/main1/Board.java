@@ -182,7 +182,54 @@ public class Board {
 			return count;
 		}
 	}
-
+	
+	public Boolean isTurnOver(int squareNumber,Player player,String key) {
+		Square square = getSquare(squareNumber);
+		square.strageStone(new Stone(player.getPlayerColor()));
+		int count = 0; // ひっくり返す石の数
+		
+		count = countAmongStone(square,count,key);
+		
+		square.strageStone(null);
+		square.setBox(square.getNumberS());
+		
+		if(count > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//そのマス目に石を置いたら色が変わるかを判定するメソッド
+	public Boolean isPutStone(int squareNumber,Player player) {
+		List<Boolean> isPutStone = new ArrayList<Boolean>();
+		for(String key : getSquare(squareNumber).getAroundSquares().keySet()) {
+			isPutStone.add(isTurnOver(squareNumber,player,key));
+		}
+		return isPutStone.contains(true);
+	}
+	
+	public void notPutStone(Player player) {
+		System.out.println();
+		for(List<Square> squareList : boardSquares) {
+			for(Square square : squareList) {
+				if(square.getStone() == null && !isPutStone(square.getNumber(),player)) {
+					square.setBox("--");
+				}
+			}
+		}
+	}
+	
+	public void returnBoard() {
+		for(List<Square> squareList : boardSquares) {
+			for(Square square : squareList) {
+				if(square.getStone() == null) {
+					square.setBox(square.getNumberS());
+				}
+			}
+		}
+	}
+	
 	// Squareの周りのSquareを取得したMapを生成するメソッド
 	public Map<String, Square> creatAroundSquares(Square square) {
 

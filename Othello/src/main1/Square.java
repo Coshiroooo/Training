@@ -25,7 +25,9 @@ public class Square {
 	// マス目に石が格納されるメソッド
 	public void strageStone(Stone stone) {
 		this.stone = stone;
-		this.box = this.stone.getFrontColor();
+		if (this.stone != null) {
+			this.box = this.stone.getFrontColor();
+		}
 	}
 
 	// 隣のマスが違う色の石かを判定するメソッド
@@ -37,7 +39,7 @@ public class Square {
 		return isDifferentColor;
 	}
 
-	//石をひっくり返すメソッド
+	// 石をひっくり返すメソッド
 	public void turnOverStone() {
 		this.stone.turnOver();
 		this.box = this.stone.getFrontColor();
@@ -70,6 +72,10 @@ public class Square {
 
 	public Map<String, Square> getAroundSquares() {
 		return this.aroundSquares;
+	}
+
+	public void setBox(String box) {
+		this.box = box;
 	}
 
 }
