@@ -20,9 +20,12 @@ public class Main {
 
 		do {
 			for (Player player : allPlayer) {
+				board.notPutStone(player);
+				board.printBoard();
 				int squareNumber = player.inputSquareNumber();
 				board.installStone(squareNumber, player.putStone());
 				board.turnOverAllAmongStone(squareNumber);
+				board.returnBoard();
 				board.printBoard();
 				printCountStone();
 			}
