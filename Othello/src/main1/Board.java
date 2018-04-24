@@ -231,7 +231,7 @@ public class Board {
 	}
 
 	//石を置く場所があるか否かを判定するメソッド
-	public Boolean isPut() {
+	public Boolean isPutable() {
 		List<Boolean> isPut = new ArrayList<Boolean>();
 		for (List<Square> squareList : boardSquares) {
 			for (Square square : squareList) {
@@ -250,49 +250,49 @@ public class Board {
 		if (number > width) {
 			aroundSquares.put("north", getSquare(number - width));
 		} else {
-			aroundSquares.put("north", new Square("null"));
+			aroundSquares.put("north", new Square());
 		}
 
 		if (number > width && number % width != 0) {
 			aroundSquares.put("northEast", getSquare(number - width + 1));
 		} else {
-			aroundSquares.put("northEast", new Square("null"));
+			aroundSquares.put("northEast", new Square());
 		}
 
 		if (number % width != 0) {
 			aroundSquares.put("east", getSquare(number + 1));
 		} else {
-			aroundSquares.put("east", new Square("null"));
+			aroundSquares.put("east", new Square());
 		}
 
 		if (number <= width * (width - 1) && number % width != 0) {
 			aroundSquares.put("southEast", getSquare(number + width + 1));
 		} else {
-			aroundSquares.put("southEast", new Square("null"));
+			aroundSquares.put("southEast", new Square());
 		}
 
 		if (number <= width * (width - 1)) {
 			aroundSquares.put("south", getSquare(number + width));
 		} else {
-			aroundSquares.put("south", new Square("null"));
+			aroundSquares.put("south", new Square());
 		}
 
 		if (number <= width * (width - 1) && number % width != 1) {
 			aroundSquares.put("southWest", getSquare(number + width - 1));
 		} else {
-			aroundSquares.put("southWest", new Square("null"));
+			aroundSquares.put("southWest", new Square());
 		}
 
 		if (number % width != 1) {
 			aroundSquares.put("west", getSquare(number - 1));
 		} else {
-			aroundSquares.put("west", new Square("null"));
+			aroundSquares.put("west", new Square());
 		}
 
 		if (number > width && number % width != 1) {
 			aroundSquares.put("northWest", getSquare(number - width - 1));
 		} else {
-			aroundSquares.put("northWest", new Square("null"));
+			aroundSquares.put("northWest", new Square());
 		}
 
 		return aroundSquares;
