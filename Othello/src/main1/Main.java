@@ -4,9 +4,11 @@ import java.util.*;
 
 public class Main {
 
+	public static final String white = "◯";
+	public static final String black = "★";
 	private static Board board = new Board();
-	private static Player player1 = new Player("Player1", "white");
-	private static Player player2 = new Player("Player2", "black");
+	private static Player player1 = new Player("Player1", white);
+	private static Player player2 = new Player("Player2", black);
 	private static List<Player> allPlayer = Arrays.asList(player1, player2);
 
 	public static void main(String[] args) {
