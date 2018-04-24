@@ -32,11 +32,12 @@ public class Square {
 
 	// 隣のマスが違う色の石かを判定するメソッド
 	public Boolean isDifferentColor(String key) {
-		Boolean isDifferentColor = false;
-		if (this.stone != null && aroundSquares.get(key).getBox().equals(this.stone.getBackColor())) {
-			isDifferentColor = true;
+		Square nextSquare = aroundSquares.get(key);
+		if(this.stone != null && nextSquare.getStone() != null) {
+			return nextSquare.getStone().getFrontColor().equals(this.stone.getBackColor());
+		}else {
+			return false;
 		}
-		return isDifferentColor;
 	}
 
 	// 石をひっくり返すメソッド
