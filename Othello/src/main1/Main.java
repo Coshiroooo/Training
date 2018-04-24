@@ -25,7 +25,7 @@ public class Main {
 				board.printBoard();
 				
 				int count = 0;
-				if (!board.isPut()) {
+				if (!board.isPutable()) {
 					count++;
 					if (count > 1) {
 						break;

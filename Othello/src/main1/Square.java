@@ -18,8 +18,8 @@ public class Square {
 	}
 
 	// コンストラクタのオーバーロード
-	Square(String state) {
-		this.box = state;
+	Square() {
+		this.box = "null";
 	}
 
 	// マス目に石が格納されるメソッド
