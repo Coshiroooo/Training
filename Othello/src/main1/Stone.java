@@ -2,19 +2,17 @@ package main1;
 
 public class Stone {
 	
-	private final String white = "◯";
-	private final String black = "★";
 	private String frontColor;
 	private String backColor;
 	
 	//コンストラクタ
 	Stone(String frontColor){
-		if(frontColor.equals("white") || frontColor.equals(white)) {
-			this.frontColor = this.white;
-			this.backColor =this.black;
-		}else if(frontColor.equals("black") || frontColor.equals(black)){
-			this.frontColor = this.black;
-			this.backColor = this.white;
+		if(frontColor.equals(Main.white)) {
+			this.frontColor = Main.white;
+			this.backColor =Main.black;
+		}else if(frontColor.equals(Main.black)){
+			this.frontColor = Main.black;
+			this.backColor = Main.white;
 		}
 	}
 	
