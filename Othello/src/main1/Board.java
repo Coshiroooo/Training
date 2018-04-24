@@ -95,7 +95,7 @@ public class Board {
 		for (List<Square> squareLine : boardSquares) {
 			for (Square square : squareLine) {
 				Stone stone = square.getStone();
-				if (stone != null && stone.getFrontColor() == player.getPlayerColor()) {
+				if (stone.getIsExist() && stone.getFrontColor() == player.getPlayerColor()) {
 					count++;
 				}
 			}
@@ -106,11 +106,7 @@ public class Board {
 	// ゲーム続行条件を示すメソッド
 	public Boolean isContinue(Player player1, Player player2) {
 		int allStone = countStone(player1) + countStone(player2);
-		if (allStone < Math.pow(width, 2)) {
-			return true;
-		} else {
-			return false;
-		}
+		return allStone < Math.pow(width,2);
 	}
 
 	// 勝利判定をするメソッド
@@ -171,12 +167,12 @@ public class Board {
 
 		Square nextSquare = square.getAroundSquares().get(key);
 
-		if (!square.isDifferentColor(key) && nextSquare.getStone() != null) { // 隣が同じ色だったら
+		if (!square.isDifferentColor(key) && nextSquare.getStone().getIsExist()) { // 隣が同じ色だったら
 			count++;
 			count = countSameStone(nextSquare, count, key); // カウントを1増やして次のマスで同じ処理
 			return count;
 		} else { // 隣が違う色
-			if (nextSquare.getStone() == null) {
+			if (!nextSquare.getStone().getIsExist()) {
 				count = 0;
 				return count;
 			}
@@ -192,8 +188,7 @@ public class Board {
 
 		count = countAmongStone(square, count, key);
 
-		square.strageStone(null);
-		square.setBox(square.getNumberS());
+		square.strageStone(new Stone());
 
 		return count > 0;
 	}
@@ -212,8 +207,8 @@ public class Board {
 		System.out.println();
 		for (List<Square> squareList : boardSquares) {
 			for (Square square : squareList) {
-				if (square.getStone() == null && !isPutStone(square.getNumber(), player)) {
-					square.setBox("--");
+				if (!square.getStone().getIsExist() && !isPutStone(square.getNumber(), player)) {
+					square.switchIsShown();
 				}
 			}
 		}
@@ -223,8 +218,8 @@ public class Board {
 	public void returnBoard() {
 		for (List<Square> squareList : boardSquares) {
 			for (Square square : squareList) {
-				if (square.getStone() == null) {
-					square.setBox(square.getNumberS());
+				if (!square.getIsShown()) {
+					square.switchIsShown();
 				}
 			}
 		}
@@ -235,7 +230,7 @@ public class Board {
 		List<Boolean> isPut = new ArrayList<Boolean>();
 		for (List<Square> squareList : boardSquares) {
 			for (Square square : squareList) {
-				isPut.add(square.getStone() == null && !"--".equals(square.getBox()));
+				isPut.add(!square.getStone().getIsExist() && square.getIsShown());
 			}
 		}
 		return isPut.contains(true);

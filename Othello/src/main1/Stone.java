@@ -2,6 +2,7 @@ package main1;
 
 public class Stone {
 	
+	private boolean isExist = true;
 	private String frontColor;
 	private String backColor;
 	
@@ -16,10 +17,13 @@ public class Stone {
 		}
 	}
 	
+	Stone(){
+		this.isExist = false;
+	}
+	
 	//表と裏が入れ替わるメソッド
 	public void turnOver() {
 		String color = this.frontColor;
-		
 		this.frontColor = this.backColor;
 		this.backColor = color;
 	}
@@ -32,5 +36,9 @@ public class Stone {
 	
 	public String getBackColor() {
 		return this.backColor;
+	}
+	
+	public boolean getIsExist() {
+		return this.isExist;
 	}
 }
