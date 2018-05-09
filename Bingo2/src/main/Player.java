@@ -9,6 +9,7 @@ public class Player {
 	Player(int i, int cardWidth) {
 		bingoCard = new BingoCard(cardWidth);
 		this.playerName = "Player" + i + "さん";
+		makeMyBingoCard(cardWidth);
 	}
 
 	// プレイヤーのビンゴカードを作るメソッド
