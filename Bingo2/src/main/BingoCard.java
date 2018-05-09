@@ -34,9 +34,7 @@ public class BingoCard {
 				bingoNumbers.add(i);
 		}
 
-		numberMax = bingoNumbers.stream()
-								.max((a, b) -> a.compareTo(b))
-								.get();
+		numberMax = bingoNumbers.stream().max((a, b) -> a.compareTo(b)).get();
 
 		Collections.shuffle(bingoNumbers);
 
@@ -54,10 +52,9 @@ public class BingoCard {
 			for (int i = 0; i < cardWidth; i++)
 				System.out.print("______");
 			System.out.println();
-			bcNumbers	.stream()
-						.map(b -> lottery	.getCurrentWinningNumbers()
-											.contains(b) ? "|     " : String.format("| %3d ", b))
-						.forEach(System.out::print);
+			bcNumbers.stream()
+					.map(b -> lottery.getCurrentWinningNumbers().contains(b) ? "|     " : String.format("| %3d ", b))
+					.forEach(System.out::print);
 			System.out.print("|");
 			System.out.println();
 		});
@@ -65,9 +62,10 @@ public class BingoCard {
 			System.out.print("______");
 		System.out.println();
 		System.out.println();
-		System.out.println(bingoCardNumbers	.stream()
-											.anyMatch(b -> b.contains(lottery	.getCurrentWinningNumbers()
-																				.get(count))) ? "当たり！" : "残念！");
+		System.out.println(
+				bingoCardNumbers.stream().anyMatch(b -> b.contains(lottery.getCurrentWinningNumbers().get(count)))
+						? "当たり！"
+						: "残念！");
 		System.out.println();
 		System.out.println();
 	}
@@ -79,9 +77,7 @@ public class BingoCard {
 			for (int i = 0; i < cardWidth; i++)
 				System.out.print("______");
 			System.out.println();
-			bcNumbers	.stream()
-						.map(b -> String.format("| %3d ", b))
-						.forEach(System.out::print);
+			bcNumbers.stream().map(b -> String.format("| %3d ", b)).forEach(System.out::print);
 			System.out.print("|");
 			System.out.println();
 		});
