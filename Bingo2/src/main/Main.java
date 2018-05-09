@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.*;
 
 public class Main {
 
@@ -25,10 +26,8 @@ public class Main {
 		selectMember();
 		
 		System.out.println("Game Start!!");
-
-		for (int i = 1; i <= playerNumber; i++) {
-			allPlayers.add(new Player(i, cardWidth));
-		}
+		
+		allPlayers = IntStream.rangeClosed(1, playerNumber).mapToObj(n -> new Player(n,cardWidth)).collect(Collectors.toList());
 
 		int count = 0;
 
