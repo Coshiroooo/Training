@@ -61,10 +61,7 @@ public class BingoCard {
 		System.out.println();
 		System.out.println();
 
-		System.out.println(
-				bingoCardNumbers.stream().anyMatch(b -> b.contains(lottery.getCurrentWinningNumbers().get(count)))
-						? "当たり！"
-						: "残念！");
+		System.out.println(bingoCardNumbers.stream().anyMatch(b -> b.contains(lottery.getCurrentWinningNumbers().get(count))) ? "当たり！" : "残念！");
 
 		System.out.println();
 		System.out.println();
