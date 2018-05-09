@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.*;;
 
 public class BingoCard {
 
@@ -16,8 +17,7 @@ public class BingoCard {
 	BingoCard(int cardWidth) {
 		this.bingoCardNumbers = makeBingoCardNumbers(cardWidth);
 		cardWidthIndexes = new ArrayList<Integer>();
-		for (int i = 0; i < cardWidth; i++)
-			cardWidthIndexes.add(i);
+		cardWidthIndexes.addAll(IntStream.range(0, cardWidth).boxed().collect(Collectors.toList()));
 	}
 
 	// ビンゴカード上に配置した数字のリストを作るメソッド
