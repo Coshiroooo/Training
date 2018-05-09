@@ -45,13 +45,10 @@ public class Main {
 
 			count++;
 
-		} while (allPlayers	.stream()
-							.noneMatch(p -> p.isBingo(lottery, cardWidth)));
+		} while (allPlayers.stream().noneMatch(p -> p.isBingo(lottery, cardWidth)));
 
-		allPlayers	.stream()
-					.filter(p -> p.isBingo(lottery, cardWidth))
-					.map(p -> p.getPlayerName() + "のビンゴ！！！")
-					.forEach(System.out::println);
+		allPlayers.stream().filter(p -> p.isBingo(lottery, cardWidth)).map(p -> p.getPlayerName() + "のビンゴ！！！")
+				.forEach(System.out::println);
 
 	}
 
@@ -76,10 +73,8 @@ public class Main {
 	public static void pickWinningNumber() {
 		int winningNumber = lottery.pickNumber();
 
-		if (winningNumber <= BingoCard.numberMax && !lottery.getCurrentWinningNumbers()
-															.contains(winningNumber)) {
-			lottery	.getCurrentWinningNumbers()
-					.add(winningNumber);
+		if (winningNumber <= BingoCard.numberMax && !lottery.getCurrentWinningNumbers().contains(winningNumber)) {
+			lottery.getCurrentWinningNumbers().add(winningNumber);
 
 		} else {
 			pickWinningNumber();
@@ -105,9 +100,7 @@ public class Main {
 		System.out.println((count + 1) + "回目の抽選");
 		System.out.println();
 
-		System.out.println("当選番号は" + lottery.getCurrentWinningNumbers()
-											.get(count)
-				+ "です！");
+		System.out.println("当選番号は" + lottery.getCurrentWinningNumbers().get(count) + "です！");
 
 	}
 
