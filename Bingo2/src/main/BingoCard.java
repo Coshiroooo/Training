@@ -58,10 +58,7 @@ public class BingoCard {
 		cardWidthIndexes.forEach(c -> System.out.print("______"));
 		System.out.println();
 		System.out.println();
-		System.out.println(
-				bingoCardNumbers.stream().anyMatch(b -> b.contains(lottery.getCurrentWinningNumbers().get(count)))
-						? "当たり！"
-						: "残念！");
+		System.out.println(bingoCardNumbers.stream().anyMatch(b -> b.contains(lottery.getCurrentWinningNumbers().get(count))) ? "当たり！" : "残念！");
 		System.out.println();
 		System.out.println();
 	}
