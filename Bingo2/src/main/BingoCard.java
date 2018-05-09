@@ -18,6 +18,11 @@ public class BingoCard {
 		this.bingoCardNumbers = makeBingoCardNumbers(cardWidth);
 		cardWidthIndexes = new ArrayList<Integer>();
 		cardWidthIndexes.addAll(IntStream.range(0, cardWidth).boxed().collect(Collectors.toList()));
+
+		cardWidthIndexes = new ArrayList<Integer>();
+		for (int i = 0; i < cardWidth; i++)
+			cardWidthIndexes.add(i);
+
 	}
 
 	// ビンゴカード上に配置した数字のリストを作るメソッド
