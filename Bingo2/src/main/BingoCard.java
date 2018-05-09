@@ -27,11 +27,9 @@ public class BingoCard {
 		List<List<Integer>> bingoCardNumbers = new ArrayList<List<Integer>>();
 
 		if (cardWidth <= 10) {
-			for (int i = 1; i <= 100; i++)
-				bingoNumbers.add(i);
+			bingoNumbers = IntStream.rangeClosed(1, 100).boxed().collect(Collectors.toList());
 		} else {
-			for (int i = 1; i <= cardWidth * cardWidth; i++)
-				bingoNumbers.add(i);
+			bingoNumbers = IntStream.rangeClosed(1, (int)Math.pow(cardWidth, 2)).boxed().collect(Collectors.toList());
 		}
 
 		numberMax = bingoNumbers.stream().max((a, b) -> a.compareTo(b)).get();
