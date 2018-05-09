@@ -29,6 +29,13 @@ public class Main {
 		
 		allPlayers = IntStream.rangeClosed(1, playerNumber).mapToObj(n -> new Player(n,cardWidth)).collect(Collectors.toList());
 
+		for (int i = 1; i <= playerNumber; i++)
+			allPlayers.add(new Player(i, cardWidth));
+
+		System.out.println("Game Start!!");
+
+		allPlayers.forEach(p -> p.makeMyBingoCard(cardWidth));
+
 		int count = 0;
 
 		do {
