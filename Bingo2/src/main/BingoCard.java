@@ -9,15 +9,15 @@ public class BingoCard {
 
 	private Scanner scanner = new Scanner(System.in);
 	private List<List<Integer>> bingoCardNumbers = new ArrayList<List<Integer>>(); // カードに配置する数字のList
-	public static List<Integer> cardWidthIndex; // カードの幅のインデックスを並べたList
+	public static List<Integer> cardWidthIndexes; // カードの幅のインデックスを並べたList
 	public static int numberMax; // ビンゴカードに書かれうる数字の最大値
 
 	// コンストラクタ
 	BingoCard(int cardWidth) {
 		this.bingoCardNumbers = makeBingoCardNumbers(cardWidth);
-		cardWidthIndex = new ArrayList<Integer>();
+		cardWidthIndexes = new ArrayList<Integer>();
 		for (int i = 0; i < cardWidth; i++)
-			cardWidthIndex.add(i);
+			cardWidthIndexes.add(i);
 	}
 
 	// ビンゴカード上に配置した数字のリストを作るメソッド
@@ -49,8 +49,7 @@ public class BingoCard {
 	public void updateBingo(Lottery lottery, int cardWidth, int count) {
 
 		bingoCardNumbers.forEach(bcNumbers -> {
-			for (int i = 0; i < cardWidth; i++)
-				System.out.print("______");
+			cardWidthIndexes.forEach(c -> System.out.print("______"));
 			System.out.println();
 
 			bcNumbers.stream()
@@ -60,8 +59,7 @@ public class BingoCard {
 			System.out.print("|");
 			System.out.println();
 		});
-		for (int i = 0; i < cardWidth; i++)
-			System.out.print("______");
+		cardWidthIndexes.forEach(c -> System.out.print("______"));
 		System.out.println();
 		System.out.println();
 
@@ -78,8 +76,7 @@ public class BingoCard {
 	public void makeBingo(int cardWidth) {
 
 		bingoCardNumbers.forEach(bcNumbers -> {
-			for (int i = 0; i < cardWidth; i++)
-				System.out.print("______");
+			cardWidthIndexes.forEach(c -> System.out.print("______"));
 			System.out.println();
 
 			bcNumbers.stream().map(b -> String.format("| %3d ", b)).forEach(System.out::print);
@@ -87,8 +84,7 @@ public class BingoCard {
 			System.out.print("|");
 			System.out.println();
 		});
-		for (int i = 0; i < cardWidth; i++)
-			System.out.print("______");
+		cardWidthIndexes.forEach(c -> System.out.print("______"));
 		System.out.println();
 		System.out.println();
 	}

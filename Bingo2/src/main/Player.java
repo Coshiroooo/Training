@@ -27,7 +27,7 @@ public class Player {
 	// ビンゴ判定をするメソッド
 	public boolean isBingo(Lottery lottery, int cardWidth) {
 
-		boolean isBingoVertical = BingoCard.cardWidthIndex.stream().anyMatch(c -> bingoCard.getBingoCardNumbers()
+		boolean isBingoVertical = BingoCard.cardWidthIndexes.stream().anyMatch(c -> bingoCard.getBingoCardNumbers()
 				.stream().allMatch(b -> lottery.getCurrentWinningNumbers().contains(b.get(c))));
 		boolean isBingoSide = bingoCard.getBingoCardNumbers().stream()
 				.anyMatch(b -> b.stream().allMatch(n -> lottery.getCurrentWinningNumbers().contains(n)));
@@ -43,10 +43,6 @@ public class Player {
 	// ゲッター
 	public String getPlayerName() {
 		return this.playerName;
-	}
-
-	public BingoCard bingoCard() {
-		return this.bingoCard;
 	}
 
 }
