@@ -15,14 +15,14 @@ public class Main {
 	private static final String USERNAME = "root";
 	private static final String PASSWORD = "";
 	
-	//SQL文でデーベースから呼び出した行列の1行目をListにして返すメソッド
+	//SQL文でデーベースから呼び出した行列の1列目をListにして返すメソッド
 	public List<Object> select(String sql) {
 		
 		List<Object> rowElements = new ArrayList<>();
 		
 		try(
 				Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
 				ResultSet result = statement.executeQuery(sql);
 				){
 			
@@ -35,6 +35,25 @@ public class Main {
 			rowElements = null;
 			return rowElements;
 		}
+	}
+	
+	//SQL文でデータベースで呼び出した行の1列目の要素をxに置き換えてデータベースを更新するメソッド
+	public void update(String sql,Object x) {
+		
+		try(
+				Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+				ResultSet result = statement.executeQuery(sql);
+				){
+			
+			result.absolute(1);
+			result.updateObject(1, x);
+			result.updateRow();
+			
+		}catch(SQLException e) {
+			
+		}
+		
 	}
 
 }
