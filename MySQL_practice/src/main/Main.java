@@ -17,17 +17,18 @@ public class Main {
 		
 		try(	
 				Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-				ResultSet result = statement.executeQuery(sql1);
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+				ResultSet result1 = statement.executeQuery(sql1);
 				){
-			while(result.next()) {
-				System.out.println(result.getString(3) + " " + result.getString(2));
+			while(result1.next()) {
+				System.out.println(result1.getString(3) + " " + result1.getString(2));
 			}
 			
 			for(int i = 1; i <= 3; i++) {
-				result.absolute(i);
-				System.out.println(result.getString(3) + " " + result.getString(2));
+				result1.absolute(i);
+				System.out.println(result1.getString(3) + " " + result1.getString(2));
 			}
+			
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
