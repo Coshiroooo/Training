@@ -13,14 +13,19 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
+		String sql1 = "SELECT * FROM employer;";
+		
 		try(	
 				Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-				Statement statement = connection.createStatement();
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				ResultSet result = statement.executeQuery(sql1);
 				){
-			
-			String sql = "SELECT * FROM employer;";
-			ResultSet result = statement.executeQuery(sql);
 			while(result.next()) {
+				System.out.println(result.getString(3) + " " + result.getString(2));
+			}
+			
+			for(int i = 1; i <= 3; i++) {
+				result.absolute(i);
 				System.out.println(result.getString(3) + " " + result.getString(2));
 			}
 			
