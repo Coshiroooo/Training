@@ -34,21 +34,21 @@ public class DBConnecter {
 	}
 	
 	//取得した行列の行と列で指定された要素をStringで返すメソッド
-		public String selectString(String sql,int record,int row){
+	public String selectString(String sql,int record,int row){
 						
-			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-					Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-					ResultSet result = statement.executeQuery(sql);
-					){
+		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				ResultSet result = statement.executeQuery(sql);
+				){
 							
-				result.absolute(record);
-				return result.getString(row);
-			}catch(SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
-						
+			result.absolute(record);
+			return result.getString(row);
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
+						
+ d	}
 	
 	//取得した行列の1行目の1列目をintで返すメソッド
 	public int selectInt(String sql){
@@ -105,22 +105,22 @@ public class DBConnecter {
 	}
 	
 	//取得した行列の行と列を指定した要素をObjectで返すメソッド
-		public Object selectObj(String sql,int record,int row){
+	public Object selectObj(String sql,int record,int row){
 				
-			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-					Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-					ResultSet result = statement.executeQuery(sql);
-					){
+		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				ResultSet result = statement.executeQuery(sql);
+				){
 					
-				result.absolute(record);
-				return result.getObject(row);
+			result.absolute(record);
+			return result.getObject(row);
 					
-			}catch(SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
-				
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
+				
+ 	}
 	
 	//取得した行列の1行目の各列をMapに入れて返すメソッド
 	public Map<String,Object> selectRecord(String sql){
