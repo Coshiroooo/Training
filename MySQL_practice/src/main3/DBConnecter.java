@@ -27,25 +27,8 @@ public class DBConnecter {
 		this.PASSWORD = PASSWORD;
 	}
 	
-	//SQL文でデータベースから呼び出した行列の1行目の1列目を返すメソッド
-	public Object select(String sql) {
-		
-		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-				ResultSet result = statement.executeQuery(sql);
-				){
-			
-			result.absolute(1);
-			return result.getObject(1);
-			
-		}catch(SQLException e) {
-			return null;
-		}
-		
-	}
-	
 	//取得した行列の1行目の各列をMapに入れて返すメソッド
-	public Map<String,Object> selectMulti(String sql){
+	public Map<String,Object> select(String sql){
 		
 		Map<String,Object> elements = new HashMap<>();
 		
@@ -68,29 +51,9 @@ public class DBConnecter {
 		}
 		
 	}
-
-	// SQL文でデーベースから呼び出した行列の1列目をListにして返すメソッド
-	public List<Object> selectRow(String sql) {
-
-		List<Object> rowElements = new ArrayList<>();
-
-		try (	Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
-				ResultSet result = statement.executeQuery(sql);
-				) {
-
-			while (result.next()) rowElements.add(result.getObject(1));
-			return rowElements;
-
-		} catch (SQLException e) {
-			rowElements = null;
-			return rowElements;
-		}
-
-	}
 	
-	//取得した複数列をMapに入れて返すメソッド
-	public Map<String,List<Object>> selectMultiRow(String sql){
+	//取得した複数行の各列をMapに入れて返すメソッド
+	public Map<String,List<Object>> selectMulti(String sql){
 		
 		Map<String,List<Object>> rowElementsMap = new HashMap<>();
 
