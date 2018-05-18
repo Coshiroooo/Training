@@ -1,44 +1,85 @@
 package main3;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
+import java.sql.*;
+import java.util.*;
 
 public class DBConnecter {
 
-	private String HOST;
-	private String DB;
-	private final String URL = "jdbc:mysql://" + HOST + "/" + DB;
+	private final String URL;
 	private final String USERNAME;
 	private final String PASSWORD;
 	
 	//コンストラクタ
 	DBConnecter(String HOST,String DB,String USERNAME,String PASSWORD){
-		this.HOST = HOST;
-		this.DB = DB;
+		this.URL = "jdbc:mysql://" + HOST + "/" + DB;
 		this.USERNAME = USERNAME;
 		this.PASSWORD = PASSWORD;
 	}
 	
+	//取得した行列の1行目の1列目をStringで返すメソッド
+		public String selectString(String sql){
+					
+			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+					Statement statement = connection.createStatement();
+					ResultSet result = statement.executeQuery(sql);
+					){
+						
+				result.next();
+				return result.getString(1);
+			}catch(SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+					
+		}
+	
+	//取得した行列の1行目の1列目をintで返すメソッド
+	public int selectInt(String sql){
+				
+		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement();
+				ResultSet result = statement.executeQuery(sql);
+				){
+					
+			result.next();
+			return (int)Math.round(result.getDouble(1));
+					
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+				
+	}
+	
+	//取得した行列の1行目の1列目をObjectで返すメソッド
+	public Object selectObj(String sql){
+			
+		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement();
+				ResultSet result = statement.executeQuery(sql);
+				){
+				
+			result.next();
+			return result.getObject(1);
+				
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+			
+	}
+	
 	//取得した行列の1行目の各列をMapに入れて返すメソッド
-	public Map<String,Object> select(String sql){
+	public Map<String,Object> selectMap(String sql){
 		
 		Map<String,Object> elements = new HashMap<>();
 		
 		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				Statement statement = connection.createStatement();
 				ResultSet result = statement.executeQuery(sql);
 				){
-			
 			ResultSetMetaData resultMD = result.getMetaData();
-			result.absolute(1);
+			result.next();
 			
 			for(int i = 1; i <= resultMD.getColumnCount(); i++) {
 				elements.put(resultMD.getColumnName(i), result.getObject(i));
@@ -47,13 +88,14 @@ public class DBConnecter {
 			return elements;
 			
 		}catch(SQLException e) {
+			e.printStackTrace();
 			return null;
 		}
 		
 	}
 	
 	//取得した複数行の各列をMapに入れて返すメソッド
-	public Map<String,List<Object>> selectMulti(String sql){
+	public Map<String,List<Object>> selectObjMulti(String sql){
 		
 		Map<String,List<Object>> rowElementsMap = new HashMap<>();
 
