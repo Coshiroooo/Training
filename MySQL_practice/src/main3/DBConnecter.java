@@ -48,7 +48,7 @@ public class DBConnecter {
 			return null;
 		}
 						
- d	}
+ 	}
 	
 	//取得した行列の1行目の1列目をintで返すメソッド
 	public int selectInt(String sql){
