@@ -17,21 +17,21 @@ public class DBConnecter {
 	}
 	
 	//取得した行列の1行目の1列目をStringで返すメソッド
-		public String selectString(String sql){
+	public String selectString(String sql){
 					
-			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
-					Statement statement = connection.createStatement();
-					ResultSet result = statement.executeQuery(sql);
-					){
+		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement();
+				ResultSet result = statement.executeQuery(sql);
+				){
 						
-				result.next();
-				return result.getString(1);
-			}catch(SQLException e) {
-				e.printStackTrace();
-				return null;
-			}
-					
+			result.next();
+			return result.getString(1);
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
 		}
+					
+	}
 	
 	//取得した行列の1行目の1列目をintで返すメソッド
 	public int selectInt(String sql){
