@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		Map<String, Object> infoKoshiro = DB.selectMap("SELECT * FROM employer " + "WHERE id = 1;");
+		Map<String, Object> infoKoshiro = DB.selectRow("SELECT * FROM employer " + "WHERE id = 1;");
 		System.out.println("私の名前は" + infoKoshiro.get("first_name") + " " + infoKoshiro.get("last_name") + "です");
 		System.out.println(infoKoshiro.get("joined_year") + "年に入社しました");
 
@@ -18,7 +18,7 @@ public class Main {
 
 		DB.update("INSERT INTO employer VALUES (4,'Nekotaro','Nora',30,2016,'n',2);");
 
-		Map<String, List<Object>> employerNames = DB.selectObjMulti("SELECT first_name FROM employer;");
+		Map<String, List<Object>> employerNames = DB.selectRows("SELECT first_name FROM employer;");
 		System.out.println("社員一覧");
 		employerNames.forEach((column, value) -> System.out.print(value + " "));
 
