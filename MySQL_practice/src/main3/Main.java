@@ -27,6 +27,7 @@ public class Main {
 		DB.update("UPDATE employer SET age = 24 WHERE id = 1;");
 	
 		int ageKoshiro1 = DB.selectInt("SELECT age FROM employer WHERE id = 1;");
+		System.out.println();
 		System.out.println(infoKoshiro.get("first_name") + "は" + ageKoshiro1 + "才です");
 		
 		DB.update("UPDATE employer SET age = 23 WHERE id = 1;");

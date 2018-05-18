@@ -11,7 +11,7 @@ public class DBConnecter {
 	
 	//コンストラクタ
 	DBConnecter(String HOST,String DB,String USERNAME,String PASSWORD){
-		this.URL = "jdbc:mysql://" + HOST + "/" + DB;
+		this.URL = "jdbc:mysql://" + HOST + "/" + DB + "?useSSL=false&requireSSL=false";
 		this.USERNAME = USERNAME;
 		this.PASSWORD = PASSWORD;
 	}
