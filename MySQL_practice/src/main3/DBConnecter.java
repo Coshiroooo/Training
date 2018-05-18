@@ -33,6 +33,23 @@ public class DBConnecter {
 					
 	}
 	
+	//取得した行列の行と列で指定された要素をStringで返すメソッド
+		public String selectString(String sql,int record,int row){
+						
+			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+					Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+					ResultSet result = statement.executeQuery(sql);
+					){
+							
+				result.absolute(record);
+				return result.getString(row);
+			}catch(SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+						
+		}
+	
 	//取得した行列の1行目の1列目をintで返すメソッド
 	public int selectInt(String sql){
 				
@@ -49,6 +66,24 @@ public class DBConnecter {
 			return 0;
 		}
 				
+	}
+	
+	//取得した行列の行と列で指定された要素をintで返すメソッド
+	public int selectInt(String sql,int record,int row){
+					
+		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				ResultSet result = statement.executeQuery(sql);
+				){
+						
+			result.absolute(record);
+			return (int)Math.round(result.getDouble(row));
+						
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
+					
 	}
 	
 	//取得した行列の1行目の1列目をObjectで返すメソッド
@@ -69,8 +104,26 @@ public class DBConnecter {
 			
 	}
 	
+	//取得した行列の行と列を指定した要素をObjectで返すメソッド
+		public Object selectObj(String sql,int record,int row){
+				
+			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+					Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+					ResultSet result = statement.executeQuery(sql);
+					){
+					
+				result.absolute(record);
+				return result.getObject(row);
+					
+			}catch(SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+				
+		}
+	
 	//取得した行列の1行目の各列をMapに入れて返すメソッド
-	public Map<String,Object> selectRow(String sql){
+	public Map<String,Object> selectRecord(String sql){
 		
 		Map<String,Object> elements = new HashMap<>();
 		
@@ -94,8 +147,33 @@ public class DBConnecter {
 		
 	}
 	
+	//取得した行列の指定した行の各列をMapに入れて返すメソッド
+	public Map<String,Object> selectRecord(String sql,int record){
+			
+		Map<String,Object> elements = new HashMap<>();
+			
+		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				ResultSet result = statement.executeQuery(sql);
+				){
+			ResultSetMetaData resultMD = result.getMetaData();
+			result.absolute(record);
+				
+			for(int i = 1; i <= resultMD.getColumnCount(); i++) {
+				elements.put(resultMD.getColumnName(i), result.getObject(i));
+			}
+				
+			return elements;
+				
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+			
+	}
+	
 	//取得した複数行の各列をMapに入れて返すメソッド
-	public Map<String,List<Object>> selectRows(String sql){
+	public Map<String,List<Object>> selectRecords(String sql){
 		
 		Map<String,List<Object>> rowElementsMap = new HashMap<>();
 
