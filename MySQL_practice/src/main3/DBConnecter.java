@@ -70,7 +70,7 @@ public class DBConnecter {
 	}
 	
 	//取得した行列の1行目の各列をMapに入れて返すメソッド
-	public Map<String,Object> selectMap(String sql){
+	public Map<String,Object> selectRow(String sql){
 		
 		Map<String,Object> elements = new HashMap<>();
 		
@@ -95,7 +95,7 @@ public class DBConnecter {
 	}
 	
 	//取得した複数行の各列をMapに入れて返すメソッド
-	public Map<String,List<Object>> selectObjMulti(String sql){
+	public Map<String,List<Object>> selectRows(String sql){
 		
 		Map<String,List<Object>> rowElementsMap = new HashMap<>();
 
