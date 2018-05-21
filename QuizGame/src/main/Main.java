@@ -14,15 +14,15 @@ public class Main {
 		System.out.println("いきなりですが、クイズを始めます！！！");
 		System.out.println();
 
-		quizDB.update("INSERT INTO results DEFAULT VALUES;");
+		quizDB.update("INSERT INTO results VALUES();");
 		int resultId = quizDB.selectInt("SELECT MAX(id) FROM results");
 
 		List<Integer> quesIdList = quizDB.selectColInt("SELECT id FROM questions;", 1);
 		Collections.shuffle(quesIdList);
 
-		IntStream.rangeClosed(1, quesNumber).forEach(n -> {
+		IntStream.rangeClosed(1, quesNumber).boxed().forEach(n -> {
 
-			quizDB.update("INSERT INTO logs results_id VALUES (" + resultId + ");");
+			quizDB.update("INSERT INTO logs(results_id) VALUES (" + resultId + ");");
 			int logId = quizDB.selectInt("SELECT MAX(id) FROM logs");
 			int quesId = quesIdList.get(n);
 			
@@ -35,9 +35,9 @@ public class Main {
 		});
 
 		int perfectScore = quesNumber * 20;
-		int sumPoint = quizDB.selectInt("SELECT point FROM results WHERE id = " + resultId);	
+		int sumPoint = quizDB.selectInt("SELECT SUM(point) FROM logs WHERE results_id = " + resultId);	
 		int per = (int)(sumPoint / perfectScore * 100);
-		quizDB.update("UPDATE results (point,per) VALUES (" + sumPoint + "," + per + ");");
+		quizDB.update("UPDATE results SET point = " + sumPoint + " , per = " + per + " WHERE id = " + resultId + ";");
 		
 		System.out.print("【合計得点】　　");
 		System.out.println( sumPoint + " / " + perfectScore);
@@ -46,14 +46,15 @@ public class Main {
 	
 	static void printQuestion(int n,int logId,int quesId) {
 		System.out.print("【第" + n + "問】　");
-		quizDB.update("UPDATE logs SET question_id = " + quesId + " WHERE id = " + logId + ";");
-		System.out.println(quizDB.selectStr("SELECT * FROM questions;", quesId, 1));
+		quizDB.update("UPDATE logs SET questions_id = " + quesId + " WHERE id = " + logId + ";");
+		System.out.println(quizDB.selectStr("SELECT * FROM questions;", quesId, 2));
 
-		List<Integer> choiceIdList = quizDB.selectColInt("SELECT choice_id FROM choices;", 1);
+		List<Integer> choiceIdList = quizDB.selectColInt("SELECT choice_id FROM choices WHERE question_id = " + quesId + ";", 1);
 		choiceIdList.stream()
 				.map(c -> c + ". " + quizDB.selectStr("SELECT choice FROM choices WHERE choice_id = " + c + " AND question_id = " + quesId +";"))
 				.forEach(System.out::println);
 		System.out.println();
+		System.out.println("-------------------");
 	}
 	
 	static int choiceInput(int logId) {
@@ -64,6 +65,7 @@ public class Main {
 	}
 	
 	static void printJudge(int logId,int quesId,int choiceId) {
+		System.out.println();
 		if (choiceId == quizDB.selectInt("SELECT correct_choice_id FROM questions", quesId, 1)) {
 			System.out.println("正解！！！！！");
 			quizDB.update("UPDATE logs SET point = " + 20 + " WHERE id = " + logId + ";");
