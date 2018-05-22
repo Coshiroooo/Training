@@ -11,7 +11,7 @@ public class Main3 {
 
 	public static void main(String[] args) {
 		printQuesAll();
-		addQues();
+		deleteQues(11);
 	}
 	
 	//問題を追加するメソッド
@@ -88,7 +88,6 @@ public class Main3 {
 		for(int id : quesIdList) {
 			quizDB.update("UPDATE questions SET new_id = " + id + " WHERE id = " + id + ";");
 		}
-		quizDB.update("UPDATE choices SET question_id = (SELECT new_id FROM questions JOIN choices ON questions.id = choices.question_id GROUP BY new_id HAVING )"+";");
 		quizDB.update("UPDATE choices RIGHT JOIN questions ON choices.question_id = questions.id SET question_id = new_id;");
 		quizDB.update("ALTER TABLE questions drop column id;");
 		quizDB.update("ALTER TABLE questions CHANGE new_id id int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT FIRST;");
