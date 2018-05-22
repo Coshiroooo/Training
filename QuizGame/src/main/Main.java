@@ -25,25 +25,20 @@ public class Main {
 			quizDB.update("INSERT INTO logs(results_id) VALUES (" + resultId + ");");
 			int logId = quizDB.selectInt("SELECT MAX(id) FROM logs");
 			int quesId = quesIdList.get(n);
+			quizDB.update("UPDATE questions SET ques_numbers = ques_number + 1 WHERE id = " + quesId + ";");
 			
 			printQuestion(n,logId,quesId);
-			
 			int choiceId = choiceInput(logId);
-
 			printJudge(logId,quesId,choiceId);
+			updateCorrectRate(quesId);
 
 		});
 
-		int perfectScore = quesNumber * 20;
-		int sumPoint = quizDB.selectInt("SELECT SUM(point) FROM logs WHERE results_id = " + resultId);	
-		int per = (int)(sumPoint / perfectScore * 100);
-		quizDB.update("UPDATE results SET point = " + sumPoint + " , per = " + per + " WHERE id = " + resultId + ";");
-		
-		System.out.print("【合計得点】　　");
-		System.out.println( sumPoint + " / " + perfectScore);
+		updateResults(resultId);
 
 	}
 	
+	//n問目の問題を出題するメソッド
 	static void printQuestion(int n,int logId,int quesId) {
 		System.out.print("【第" + n + "問】　");
 		quizDB.update("UPDATE logs SET questions_id = " + quesId + " WHERE id = " + logId + ";");
@@ -57,6 +52,7 @@ public class Main {
 		System.out.println("-------------------");
 	}
 	
+	//回答を入力するメソッド
 	static int choiceInput(int logId) {
 		System.out.print("正解を数字でお答えください：");
 		int choiceId = scanner.nextInt();
@@ -64,15 +60,35 @@ public class Main {
 		return choiceId;
 	}
 	
+	//問題の成否を判定し、点数計算するメソッド
 	static void printJudge(int logId,int quesId,int choiceId) {
 		System.out.println();
 		if (choiceId == quizDB.selectInt("SELECT correct_choice_id FROM questions", quesId, 1)) {
 			System.out.println("正解！！！！！");
+			quizDB.update("UPDATE questions SET correct_numbers = correct_numbers + 1 WHERE id = " + quesId + ";");
 			quizDB.update("UPDATE logs SET point = " + 20 + " WHERE id = " + logId + ";");
 		} else {
 			System.out.println("残念！！！はずれ！！！！！");
 		}
+	}
+	
+	//正答率を更新するメソッド
+	static void updateCorrectRate(int quesId) {
+		int quesNumbers = quizDB.selectInt("SELECT * FROM questions",quesId,4);
+		int correctNumbers = quizDB.selectInt("SELECT * FROM questions",quesId,5);
+		int correctRate = Math.round(correctNumbers / quesNumbers * 100);
+		quizDB.update("UPDATE questions SET correct_rate = " + correctRate + " WHERE id = " + quesId + ";");
 		System.out.println();
+	}
+	
+	//ResultsTableを更新するメソッド
+	static void updateResults(int resultId) {
+		int perfectScore = quesNumber * 20;
+		int sumPoint = quizDB.selectInt("SELECT SUM(point) FROM logs WHERE results_id = " + resultId);	
+		int per = (int)(sumPoint * 100 / perfectScore);
+		quizDB.update("UPDATE results SET point = " + sumPoint + " , per = " + per + " WHERE id = " + resultId + ";");
+		
+		System.out.println("【合計得点】\t" + sumPoint + " / " + perfectScore);
 	}
 
 }
