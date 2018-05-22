@@ -25,7 +25,7 @@ public class Main {
 			quizDB.update("INSERT INTO logs(results_id) VALUES (" + resultId + ");");
 			int logId = quizDB.selectInt("SELECT MAX(id) FROM logs");
 			int quesId = quesIdList.get(n);
-			quizDB.update("UPDATE questions SET ques_numbers = ques_number + 1 WHERE id = " + quesId + ";");
+			quizDB.update("UPDATE questions SET ques_numbers = ques_numbers + 1 WHERE id = " + quesId + ";");
 			
 			printQuestion(n,logId,quesId);
 			int choiceId = choiceInput(logId);
@@ -76,9 +76,9 @@ public class Main {
 	static void updateCorrectRate(int quesId) {
 		int quesNumbers = quizDB.selectInt("SELECT * FROM questions",quesId,4);
 		int correctNumbers = quizDB.selectInt("SELECT * FROM questions",quesId,5);
-		int correctRate = Math.round(correctNumbers / quesNumbers * 100);
+		int correctRate = (int)((double)correctNumbers / (double)quesNumbers * 100);
 		quizDB.update("UPDATE questions SET correct_rate = " + correctRate + " WHERE id = " + quesId + ";");
-		System.out.println();
+		System.out.println(quesNumbers + " " + correctNumbers + " " + correctRate + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	}
 	
 	//ResultsTableを更新するメソッド

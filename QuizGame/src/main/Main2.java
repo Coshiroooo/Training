@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Main2 {
 	
-	private static DBConnecter quizDB = new DBConnecter("localhost","quiz_db","root","");
+	private static final DBConnecter quizDB = new DBConnecter("localhost","quiz_db","root","");
 
 	public static void main(String[] args) {
 		
@@ -43,7 +43,7 @@ public class Main2 {
 		System.out.println("平均点：\t" + intToStr("%4s", "SELECT AVG(point) FROM results;") + "点\n");
 		
 		System.out.println("【あなたが間違えやすい問題】\n");
-		List<Integer> quesWorstRankIds = quizDB.selectColInt("SELECT id FROM questions ORDER BY correct_rate ASC LIMIT 3;",1);
+		List<Integer> quesWorstRankIds = quizDB.selectColInt("SELECT id FROM questions WHERE ques_numbers > 0 ORDER BY correct_rate ASC LIMIT 3;",1);
 		
 		int i = 3;
 		Collections.reverse(quesWorstRankIds);
