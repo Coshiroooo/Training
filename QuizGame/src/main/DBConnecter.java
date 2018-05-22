@@ -1,6 +1,7 @@
 package main;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class DBConnecter {
@@ -49,6 +50,27 @@ public class DBConnecter {
 		}
 						
  	}
+	
+	//取得した行列の列で指定された要素一覧をStringで返すメソッド
+		public List<String> selectColStr(String sql,int colNumber){
+							
+			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+					Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+					ResultSet result = statement.executeQuery(sql);
+					){
+								
+				List<String> col = new ArrayList<>();
+				
+				while(result.next()) {
+					col.add(result.getString(colNumber));
+				}
+				return col;
+			}catch(SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+							
+	 	}
 	
 	//取得した行列の1行目の1列目をintで返すメソッド
 	public int selectInt(String sql){
@@ -108,6 +130,30 @@ public class DBConnecter {
 		}
 						
 	}
+	
+	//取得した行列の指定した列を全てList<Integer>にして取得するメソッド
+		public List<LocalDateTime> selectColDateTime(String sql,int colNumber){
+							
+			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+					Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+					ResultSet result = statement.executeQuery(sql);
+					){
+								
+				List<LocalDateTime> col = new ArrayList<>();
+					
+				while(result.next()) {
+					LocalDateTime dateTime = result.getTimestamp(colNumber).toLocalDateTime();
+					col.add(dateTime);
+				}
+					
+				return col;
+								
+			}catch(SQLException e) {
+				e.printStackTrace();
+				return null;
+			}
+							
+		}
 	
 	//取得した行列の1行目の1列目をObjectで返すメソッド
 	public Object selectObj(String sql){
