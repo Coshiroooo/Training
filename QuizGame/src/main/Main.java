@@ -9,7 +9,9 @@ public class Main {
 
 	static Scanner scanner = new Scanner(System.in);
 	static DBConnecter quizDB = new DBConnecter("localhost", "quiz_db", "root", "");
-	static int quesNumber = 5;
+	static Map<String,List<Object>> questions = quizDB.selectRecords("SELECT * FROM questions");
+	static Map<String,List<Object>> choices = quizDB.selectRecords("SELECT * FROM choices");
+	static int questionNumber = 5;
 
 	public static void main(String[] args) {
 
@@ -18,22 +20,22 @@ public class Main {
 		quizDB.update("INSERT INTO results VALUES()");
 		int resultId = quizDB.selectInt("SELECT MAX(id) FROM results");
 
-		List<Integer> quesIdList = quizDB.selectColInt("SELECT id FROM questions", 1);
-		Collections.shuffle(quesIdList);
+		List<Integer> questionIdList = quizDB.selectColInt("SELECT id FROM questions", 1);
+		Collections.shuffle(questionIdList);
 
-		IntStream.rangeClosed(1, quesNumber).boxed().forEach(n -> {
+		IntStream.rangeClosed(1, questionNumber).boxed().forEach(n -> {
 
 			quizDB.update("INSERT INTO logs(results_id) VALUES (" + resultId + ")");
 
 			int logId = quizDB.selectInt("SELECT MAX(id) FROM logs");
-			int quesId = quesIdList.get(n);
+			int questionId = questionIdList.get(n);
 
-			quizDB.update("UPDATE questions SET ques_numbers = ques_numbers + 1 WHERE id = " + quesId);
+			quizDB.update("UPDATE questions SET ques_numbers = ques_numbers + 1 WHERE id = " + questionId);
 
-			printQuestion(n, logId, quesId);
+			printQuestion(n, logId, questionId);
 			int choiceId = choiceInput(logId);
-			printJudgement(logId, quesId, choiceId);
-			updateCorrectRate(quesId);
+			printJudgement(logId, questionId, choiceId);
+			updateCorrectRate(questionId);
 
 		});
 
@@ -43,18 +45,14 @@ public class Main {
 	}
 
 	// n問目の問題を出題するメソッド
-	static void printQuestion(int n, int logId, int quesId) {
+	static void printQuestion(int n, int logId, int questionId) {
 		System.out.print("【第" + n + "問】　");
-		quizDB.update("UPDATE logs SET questions_id = " + quesId + " WHERE id = " + logId);
-		System.out.println(quizDB.selectStr("SELECT * FROM questions;", quesId, 2));
+		quizDB.update("UPDATE logs SET questions_id = " + questionId + " WHERE id = " + logId);
+		System.out.println(quizDB.selectStr("SELECT * FROM questions;", questionId, 2));
 
-		List<Integer> choiceIdList = quizDB.selectColInt("SELECT choice_id FROM choices WHERE question_id = " + quesId,
-				1);
-		choiceIdList.stream()
-				.map(c -> c + ". "
-						+ quizDB.selectStr(
-								"SELECT choice FROM choices WHERE choice_id = " + c + " AND question_id = " + quesId))
-				.forEach(System.out::println);
+		List<String> choiceList = quizDB.selectColStr("SELECT choice FROM choices WHERE question_id = " + questionId,1);
+		choiceList.stream().map(c -> choiceList.indexOf(c) + ". " + c).forEach(System.out::println);
+		
 		System.out.println("\n-------------------");
 	}
 
@@ -67,32 +65,32 @@ public class Main {
 	}
 
 	// 問題の成否を判定し、点数計算するメソッド
-	static void printJudgement(int logId, int quesId, int choiceId) {
+	static void printJudgement(int logId, int questionId, int choiceId) {
 		System.out.println();
-		int correctChoiceId = quizDB.selectInt("SELECT correct_choice_id FROM questions", quesId, 1);
+		int correctChoiceId = quizDB.selectInt("SELECT correct_choice_id FROM questions", questionId, 1);
 		if (choiceId == correctChoiceId) {
 			System.out.println("正解！！！！！\n");
-			quizDB.update("UPDATE questions SET correct_numbers = correct_numbers + 1 WHERE id = " + quesId);
+			quizDB.update("UPDATE questions SET correct_numbers = correct_numbers + 1 WHERE id = " + questionId);
 			quizDB.update("UPDATE logs SET point = " + 20 + " WHERE id = " + logId);
 		} else {
 			System.out.println("残念！！！はずれ！！！！！");
 			System.out.println("正解は " + correctChoiceId + "." + quizDB.selectStr(
-					"SELECT choice FROM choices WHERE choice_id = " + correctChoiceId + " AND question_id = " + quesId)
+					"SELECT choice FROM choices WHERE choice_id = " + correctChoiceId + " AND question_id = " + questionId)
 					+ "\n");
 		}
 	}
 
 	// 正答率を更新するメソッド
-	static void updateCorrectRate(int quesId) {
-		double quesNumbers = quizDB.selectInt("SELECT * FROM questions", quesId, 4);
-		double correctNumbers = quizDB.selectInt("SELECT * FROM questions", quesId, 5);
-		int correctRate = (int) (correctNumbers / quesNumbers * 100);
-		quizDB.update("UPDATE questions SET correct_rate = " + correctRate + " WHERE id = " + quesId + ";");
+	static void updateCorrectRate(int questionId) {
+		double quesNumber = quizDB.selectInt("SELECT * FROM questions", questionId, 4);
+		double correctNumber = quizDB.selectInt("SELECT * FROM questions", questionId, 5);
+		int correctRate = (int) (correctNumber / quesNumber * 100);
+		quizDB.update("UPDATE questions SET correct_rate = " + correctRate + " WHERE id = " + questionId + ";");
 	}
 
 	// ResultsTableを更新するメソッド
 	static void updateResults(int resultId) {
-		int perfectScore = quesNumber * 20;
+		int perfectScore = questionNumber * 20;
 		int sumPoint = quizDB.selectInt("SELECT SUM(point) FROM logs WHERE results_id = " + resultId);
 		int per = (int) (sumPoint * 100 / perfectScore);
 		quizDB.update("UPDATE results SET point = " + sumPoint + " , per = " + per + " WHERE id = " + resultId + "\n");
@@ -129,27 +127,23 @@ public class Main {
 		System.out.println("平均点：\t" + intToStr("%4s", "SELECT AVG(point) FROM results;") + "点\n");
 
 		System.out.println("【あなたが間違えやすい問題】\n");
-		List<Integer> quesWorstRankIds = quizDB.selectColInt("SELECT id FROM questions "
-														   + "WHERE ques_numbers > 0 "
-														   + "ORDER BY correct_rate ASC LIMIT 3;", 1);
+		Map<String,List<Object>> questionWorstRank = quizDB.selectRecords("SELECT * FROM questions WHERE ques_number > 0 ORDER BY correct_rate ASC LIMIT 3");
 
-		int i = 3;
-		Collections.reverse(quesWorstRankIds);
-
-		for (int id : quesWorstRankIds) {
-			String quesWHERE = "WHERE id = " + id;
-			List<Integer> choiceIds = quizDB.selectColInt("SELECT * FROM choices WHERE question_id = " + id, 2);
-
-			System.out.print("【" + i + "位】\t");
-			System.out.println("正答率：" + intToStr("%3s", "SELECT correct_rate FROM questions " + quesWHERE) + "%");
-			System.out.println("Q. " + quizDB.selectStr("SELECT question FROM questions " + quesWHERE));
-			choiceIds.stream()
-					.map(choiceId -> choiceId + ". " + quizDB.selectStr(
-							"SELECT choice FROM choices WHERE choice_id = " + choiceId + " AND question_id = " + id))
-					.forEach(System.out::println);
+		
+		questionWorstRank.get("id").stream().map(id -> (int)id).forEach(id -> {
+			
+			System.out.print("【" + questionWorstRank.get("id").indexOf(id) + "位】\t");
+			System.out.println("正答率" + intToStr("%3s",questionWorstRank.get("correct_rate").get(id).toString()) + "%");
+			System.out.println("Q. " + questionWorstRank.get("question").get(id).toString());
+			
+			Map<String,List<Object>> choices = quizDB.selectRecords("SELECT * FROM choices");
+			choices.get("id").stream().map(choiceId -> (int)choiceId)
+									  .map(choiceId -> choiceId + ". " + choices.get("choice").get(choiceId).toString())
+									  .forEach(System.out::println);
 			System.out.println();
-			i--;
-		}
+			
+		});
+		
 
 	}
 
