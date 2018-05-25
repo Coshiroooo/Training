@@ -34,12 +34,12 @@ public class Main2 {
 			IntStream.rangeClosed(1, choiceNumber).boxed().forEach(n -> {
 				System.out.print(n + "番目の選択肢を入力してください\n==> :");
 				String choice = scan.next();
-				quizDB.update("INSERT INTO choices VALUES('" + questionIdMax + "','" + n + "','" + choice + "')");
+				quizDB.update(String.format("INSERT INTO choices VALUES(%s,%s,%s)", questionIdMax, n, choice));
 			});
 			System.out.print("正解の選択肢を入力してください\n==> :");
 			int correctChoiceId = scan.nextInt();
 			
-			quizDB.update("UPDATE questions SET question = '" + question  + "' , correct_choice_id = " + correctChoiceId + " WHERE id = " + questionIdMax);
+			quizDB.update(String.format("UPDATE questions SET question = %s ,correct_choice_id = %s WHERE id = %s", question, correctChoiceId, questionIdMax));
 			System.out.println();
 			System.out.println("問題の追加が完了しました\n");
 			printQuestionAll();
@@ -58,9 +58,9 @@ public class Main2 {
 		System.out.println("--------------------");
 		System.out.println("【問題一覧】\n");
 		int count = 1;
-		List<String> quesList = quizDB.selectColStr("SELECT * FROM questions", 2);
-		for(String question : quesList) {
-			System.out.println(count + ". " + question);
+		List<Object> questionList = Main.questions.get("question");
+		for(Object question : questionList) {
+			System.out.println(count + ". " + question.toString());
 			count++;
 		}
 		System.out.println("--------------------");
