@@ -131,7 +131,7 @@ public class DBConnecter {
 						
 	}
 	
-	//取得した行列の指定した列を全てList<Integer>にして取得するメソッド
+	//取得した行列の指定した列を全てList<LocaDateTime>にして取得するメソッド
 		public List<LocalDateTime> selectColDateTime(String sql,int colNumber){
 							
 			try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
@@ -190,6 +190,29 @@ public class DBConnecter {
 		}
 				
  	}
+	
+	//取得した行列の指定した列を全てList<Integer>にして取得するメソッド
+	public List<Object> selectColObj(String sql,int colNumber){
+							
+		try(	Connection connection = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+				Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY);
+				ResultSet result = statement.executeQuery(sql);
+				){
+								
+			List<Object> col = new ArrayList<>();
+					
+			while(result.next()) {
+				col.add(result.getObject(colNumber));
+			}
+					
+			return col;
+								
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+							
+	}
 	
 	//取得した行列の1行目の各列をMapに入れて返すメソッド
 	public Map<String,Object> selectRecord(String sql){
@@ -255,8 +278,11 @@ public class DBConnecter {
 			
 			for(int i = 1; i <= resultMD.getColumnCount(); i++) {
 				List<Object> rowElements = new ArrayList<>();
-				while(result.next()) rowElements.add(result.getObject(i));
+				while(result.next()) {
+					rowElements.add(result.getObject(i));
+				}
 				rowElementsMap.put(resultMD.getColumnName(i), rowElements);
+				result.beforeFirst();
 			}
 			
 			return rowElementsMap;
