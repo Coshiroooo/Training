@@ -43,6 +43,8 @@ class Bingo
     end
   end
 
+  # ========================================= ここから実行
+
   puts "【BINGO GAME】"
 
   select_width

@@ -30,22 +30,20 @@ class BingoCard
     end
   end
 
-  # @@card_widthのセッター
+  # ========================================= getter or setter
+
   def self.get_card_width
     @@card_width
   end
 
-  # @@card_widthのセッター
   def self.set_card_width(card_width)
     @@card_width = card_width
   end
 
-  # @@numbers_maxのゲッター
   def self.get_numbers_max
     @@numbers_max
   end
 
-  # @bingo_numbersのセッター
   def get_bingo_numbers
     @bingo_numbers
   end
