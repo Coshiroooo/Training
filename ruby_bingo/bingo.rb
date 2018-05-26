@@ -55,7 +55,7 @@ class Bingo
   count = 0
 
   @@players = [*1..@@player_number].map { |n| Player.new(n)}
-  @@players.each {|p| p.print_bingo(count,@@previous_numbers)}
+  @@players.each {|p| p.print_card(count,@@previous_numbers)}
 
   loop do
     count += 1
@@ -63,7 +63,7 @@ class Bingo
     key_input
     put_win_number
     print_win_number(count)
-    @@players.each {|player| player.print_bingo(count,@@previous_numbers)}
+    @@players.each {|player| player.print_card(count,@@previous_numbers)}
     @@players.any?{|player| player.bingo?(@@previous_numbers)} ? break : next
   end
 
