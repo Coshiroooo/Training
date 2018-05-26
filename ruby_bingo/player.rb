@@ -9,7 +9,7 @@ class Player
   end
 
   # 自分のビンゴカードを表示するメソッド
-  def print_bingo(count, previous_numbers)
+  def print_card(count, previous_numbers)
     puts "\n#{@name}のカードです"
     @bingo_card.create_bingo(count,previous_numbers)
   end
@@ -27,7 +27,8 @@ class Player
     is_vertical_bingo || is_side_bingo || is_slant1_bingo || is_slant2_bingo
   end
 
-  # @nameのゲッター
+  # ========================================= getter
+
   def get_name
     @name
   end
