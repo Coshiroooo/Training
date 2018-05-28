@@ -3,6 +3,8 @@ class BingoCard
   @@card_width
   @@numbers_max
 
+  attr_accessor :bingo_numbers
+
   # イニシャライザ
   def initialize
     @@numbers_max = @@card_width <= 10 ? 100 : @@card_width ** 2
@@ -30,22 +32,16 @@ class BingoCard
     end
   end
 
-  # ========================================= getter or setter
+  def self.card_width=(value)
+    @@card_width = value
+  end
 
-  def self.get_card_width
+  def self.card_width
     @@card_width
   end
 
-  def self.set_card_width(card_width)
-    @@card_width = card_width
-  end
-
-  def self.get_numbers_max
+  def self.numbers_max
     @@numbers_max
-  end
-
-  def get_bingo_numbers
-    @bingo_numbers
   end
 
 end

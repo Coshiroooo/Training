@@ -10,7 +10,7 @@ class Bingo
   def self.select_width
     print "\nビンゴのマス目の幅を入力してください："
     card_width = gets.to_i
-    BingoCard.set_card_width(card_width)
+    BingoCard.card_width = card_width
   end
 
   # ゲームの参加人数を決めるメソッド
@@ -22,7 +22,7 @@ class Bingo
   # 抽選番号をだすメソッド
   def self.put_win_number
     win_number = rand(999) + 1
-    if win_number <= BingoCard.get_numbers_max and !@@previous_numbers.include?(win_number)
+    if win_number <= BingoCard.numbers_max and !@@previous_numbers.include?(win_number)
       @@previous_numbers << win_number
     else
       put_win_number
@@ -68,6 +68,6 @@ class Bingo
   end
 
   winner = @@players.find {|p| p.bingo?(@@previous_numbers)}
-  puts "\n#{winner.get_name}のビンゴ！！！"
+  puts "\n#{winner.name}のビンゴ！！！"
 
 end
