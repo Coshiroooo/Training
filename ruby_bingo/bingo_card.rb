@@ -15,7 +15,7 @@ class BingoCard
   end
 
   # 抽選状況に合わせたビンゴを表示するメソッド
-  def create_bingo(previous_numbers)
+  def print_bingo(previous_numbers)
     @bingo_numbers.each do |line|
       @card_width.times {print "+----"}
       puts "+"
@@ -33,7 +33,6 @@ class BingoCard
 
   # ビンゴを判定するメソッド
   def bingo?(previous_numbers)
-
     is_vertical_bingo = [*0..@card_width].any? {|index| bingo_numbers.all? {|line| previous_numbers.include?(line[index])}}
     is_side_bingo = bingo_numbers.any? {|line| line.all? {|n| previous_numbers.include?(n)}}
     is_slant1_bingo = bingo_numbers.all? {|line| previous_numbers.include?(line[bingo_numbers.index(line)])}

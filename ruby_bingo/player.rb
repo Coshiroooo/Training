@@ -12,6 +12,7 @@ class Player
   # 自分のビンゴカードを表示するメソッド
   def print_card(previous_numbers)
     puts "\n#{@name}のカードです"
-    @bingo_card.create_bingo(previous_numbers)
+    @bingo_card.print_bingo(previous_numbers)
   end
+  
 end
