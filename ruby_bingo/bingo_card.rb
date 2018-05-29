@@ -16,7 +16,7 @@ class BingoCard
   end
 
   # 抽選状況に合わせたビンゴを表示するメソッド
-  def create_bingo(count, previous_numbers)
+  def create_bingo(previous_numbers)
     @bingo_numbers.each do |line|
       @@card_width.times {print "+----"}
       puts "+"
@@ -27,10 +27,12 @@ class BingoCard
     end
     @@card_width.times {print "+----"}
     puts "+\n"
-    if count > 0
-      puts @bingo_numbers.any? {|line| line.include?(previous_numbers[count - 1])} ? "あたり！" : "残念！"
+    unless previous_numbers.empty?
+      puts @bingo_numbers.any? {|line| line.include?(previous_numbers.last)} ? "あたり！" : "残念！"
     end
   end
+
+  # ===================================================== クラス変数のgetter setter
 
   def self.card_width=(value)
     @@card_width = value
