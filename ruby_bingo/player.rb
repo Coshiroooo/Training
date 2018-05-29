@@ -6,14 +6,14 @@ class Player
 
   # イニシャライザ
   def initialize(number)
-    @bingo_card = BingoCard.new()
+    @bingo_card = BingoCard.new
     @name = "Player#{number}さん"
   end
 
   # 自分のビンゴカードを表示するメソッド
-  def print_card(count, previous_numbers)
+  def print_card(previous_numbers)
     puts "\n#{@name}のカードです"
-    @bingo_card.create_bingo(count,previous_numbers)
+    @bingo_card.create_bingo(previous_numbers)
   end
 
   # ビンゴを判定するメソッド
