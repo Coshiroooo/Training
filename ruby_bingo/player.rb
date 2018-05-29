@@ -1,7 +1,6 @@
 require './bingo_card'
 
 class Player
-
   attr_accessor :name, :bingo_card
 
   # イニシャライザ
@@ -15,5 +14,4 @@ class Player
     puts "\n#{@name}のカードです"
     @bingo_card.create_bingo(previous_numbers)
   end
-
 end
