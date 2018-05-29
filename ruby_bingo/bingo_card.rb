@@ -14,8 +14,8 @@ class BingoCard
                      end
   end
 
-  # 抽選状況に合わせたビンゴを表示するメソッド
-  def print_bingo(previous_numbers)
+  # 抽選状況に合わせたカードを表示するメソッド
+  def print_card(previous_numbers)
     @bingo_numbers.each do |line|
       @card_width.times {print "+----"}
       puts "+"

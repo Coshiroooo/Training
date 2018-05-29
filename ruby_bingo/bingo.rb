@@ -50,14 +50,14 @@ class Bingo
     @previous_numbers = []
 
     @players = [*1..@player_number].map { |n| Player.new(n, card_width) }
-    @players.each { |p| p.print_card(@previous_numbers) }
+    @players.each { |p| p.print_my_card(@previous_numbers) }
 
     1.step do |count|
       puts "\n↓抽選する↓"
       key_input
       put_win_number(numbers_max)
       print_win_number(count)
-      @players.each { |player| player.print_card(@previous_numbers) }
+      @players.each { |player| player.print_my_card(@previous_numbers) }
       @players.any? { |player| player.bingo_card.bingo?(@previous_numbers) } ? break : next
     end
 
