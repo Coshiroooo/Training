@@ -5,11 +5,12 @@ class BingoCard
   # イニシャライザ
   def initialize(card_width)
     @card_width = card_width
-    @numbers_max = @card_width <= 10 ? 100 : @card_width ** 2
+    square_size = @card_width ** 2
+    @numbers_max = @card_width <= 10 ? 100 : square_size
     @bingo_numbers = if @card_width <= 10
-                       [*1..100].shuffle.slice(0, @card_width ** 2).each_slice(@card_width).to_a
+                       [*1..100].shuffle.slice(0, square_size).each_slice(@card_width).to_a
                      else
-                       [*1..@card_width ** 2].shuffle.slice(0, @card_width ** 2).each_slice(@card_width).to_a
+                       [*1..square_size].shuffle.slice(0, square_size).each_slice(@card_width).to_a
                      end
   end
 
