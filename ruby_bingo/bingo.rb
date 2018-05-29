@@ -6,7 +6,7 @@ class Bingo
   def select_width
     print "\nビンゴのマス目の幅を入力してください："
     card_width = gets.to_i
-    BingoCard.card_width = card_width
+    card_width
   end
 
   # ゲームの参加人数を決めるメソッド
@@ -16,19 +16,19 @@ class Bingo
   end
 
   # 抽選番号をだすメソッド
-  def put_win_number
+  def put_win_number(numbers_max)
     win_number = rand(999) + 1
-    if win_number <= BingoCard.numbers_max and !@previous_numbers.include?(win_number)
+    if win_number <= numbers_max and !@previous_numbers.include?(win_number)
       @previous_numbers << win_number
     else
-      put_win_number
+      put_win_number(numbers_max)
     end
   end
 
   # 当選番号を表示するメソッド
   def print_win_number(count)
     puts "#{count}回目の抽選"
-    puts "\n当選番号は#{@previous_numbers[count - 1]}です！"
+    puts "\n当選番号は#{@previous_numbers.last}です！"
   end
 
   # キーボード入力すると次の処理が始まるメソッド
@@ -43,14 +43,16 @@ class Bingo
   def run
     puts "【BINGO GAME】"
 
-    select_width
+    card_width = select_width
+    numbers_max = BingoCard.new(card_width).numbers_max
+
     select_member
 
     puts "Game Start!!"
 
     @previous_numbers = []
 
-    @players = [*1..@player_number].map { |n| Player.new(n)}
+    @players = [*1..@player_number].map { |n| Player.new(n, card_width)}
     @players.each {|p| p.print_card(@previous_numbers)}
 
     count = 0
@@ -59,13 +61,13 @@ class Bingo
       count += 1
       puts "\n↓抽選する↓"
       key_input
-      put_win_number
+      put_win_number(numbers_max)
       print_win_number(count)
       @players.each {|player| player.print_card(@previous_numbers)}
-      @players.any?{|player| player.bingo?(@previous_numbers)} ? break : next
+      @players.any?{|player| player.bingo_card.bingo?(@previous_numbers)} ? break : next
     end
 
-    winner = @players.find {|p| p.bingo?(@previous_numbers)}
+    winner = @players.find {|p| p.bingo_card.bingo?(@previous_numbers)}
     puts "\n#{winner.name}のビンゴ！！！"
   end
 
