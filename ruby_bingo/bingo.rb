@@ -55,10 +55,7 @@ class Bingo
     @players = [*1..@player_number].map { |n| Player.new(n, card_width)}
     @players.each {|p| p.print_card(@previous_numbers)}
 
-    count = 0
-
-    loop do
-      count += 1
+    1.step do |count|
       puts "\n↓抽選する↓"
       key_input
       put_win_number(numbers_max)
